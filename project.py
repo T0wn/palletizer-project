@@ -1,14 +1,19 @@
 
 from robolink import *
 from robodk import *
+import CustomBox
 import math
 import time
 
 sim = Robolink()
 
+lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
+eirikBox = CustomBox.CustomBox("CustomBox", 80, 40, 50)
+boxToUse = eirikBox
+
 robot = sim.Item("UR10")
 tool = sim.Item("CostumTool")
-box = sim.Item("WoodBox")
+box = sim.Item(boxToUse.name)
 
 robotFrame = sim.Item('UR10 Base')
 
@@ -24,65 +29,76 @@ leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
 rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
 
 
-box_length = 48
-box_width = 48
-box_heigth = 48
+box_length = boxToUse.length
+box_width = boxToUse.width
+box_heigth = boxToUse.height
 boxes_per_layer = 9
 boxes_per_pallet = 27
 space_between_boxes = 10
 speilvendt_stabling = False
 pallet_length = 500
 pallet_width = 300
+target = leftTarget
 
 
 def copy_new_box():
     box.Copy()
     new_box = sim.Paste(robotFrame)
-    new_box.setPose(pickTarget * rotx(-pi/2))
+    new_box.setPose(pickTarget * transl(0, 0, -box_heigth))
 
 def pick_new_box():
-    robot.MoveJ( pickTarget * transl(box_length / 2, box_width / 2, -100) )
-    robot.MoveL( pickTarget * transl(box_length / 2, box_width / 2, -box_heigth) )
+    robot.MoveJ( pickTarget * transl(box_width / 2, box_length / 2, -100) )
+    robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -box_heigth) )
     tool.AttachClosest()
-    robot.MoveL( pickTarget * transl(box_length / 2, box_width / 2, -100) )
+    robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -100) )
 
-def place_box(target, x_pos, y_pos, z_pos):
-    print(robotFrame.Pose() * target)
-
+# fix indent later
+def place_box(x_pos, y_pos, z_pos):
     y_indent = 0
-    # if ( (robotFrame.Pose() * target)[0][3] < 0 ):
-        
-
-    robot.MoveJ( target * transl(x_pos, y_pos + y_indent, z_pos - 300) )
-    robot.MoveL( target * transl(x_pos, y_pos + y_indent, z_pos - 100) )
+    x_indent = 0
+    robot.MoveJ( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - 300) )
+    robot.MoveL( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - 100) )
     robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_heigth) )
     tool.DetachAll()
     robot.MoveL( target * transl(x_pos, y_pos, z_pos - 100) )
 
+def get_pos_of_box(x, y, z):
+    print(robotFrame.Pose() * target)
+
+    # if ( (robotFrame.Pose() * target)[0][3] < 0 ):
+
 # ikke complete
-def box_per_direction(boxes_per_pallet, boxes_per_layer, pallet_length, pallet_width):
+def box_per_direction():
     x = 3
     y = 3
     z = math.ceil( boxes_per_pallet / boxes_per_layer )
     return [x, y, z]
 
-def palletize(box_length, box_width, box_heigth, space_between_boxes, boxes_per_layer, speilvendt_stabling, pallet_length, pallet_width):
-    stablemoonster = box_per_direction(boxes_per_pallet, boxes_per_layer, pallet_length, pallet_width)
-    for y in range (0, stablemoonster[2]):
+def palletize():
+    stablemoonster = box_per_direction()
+    x_max = stablemoonster[0]
+    y_max = stablemoonster[1]
+    z_max = stablemoonster[2]
 
-        y_pos = (box_width / 2) + y * (box_width + space_between_boxes)
+    for y in range(0, y_max):
 
-        copy_new_box()
-        pick_new_box()
+        y_pos = (box_length / 2) + y * (box_length + space_between_boxes)
+
+        for x in range(0, x_max):
+
+            x_pos = (box_width / 2) + x * (box_width + space_between_boxes)
+
+            copy_new_box()
+            pick_new_box()
+            place_box(x_pos, y_pos, 0)
 
         
-
 
 
 #programmet kjører herfra
 if __name__ == "__main__":
     time.sleep(3)
-    # palletize(box_length, box_width, box_heigth, space_between_boxes, boxes_per_layer, speilvendt_stabling, pallet_length, pallet_width)
-    copy_new_box()
-    pick_new_box()
-    place_box(leftTarget, 0, 0, 0)
+    palletize()
+    # copy_new_box()
+    # pick_new_box()
+    # place_box(0, 0, 0)

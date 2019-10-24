@@ -1,2 +1,4 @@
 *.ini
 *.rdk
+*.stl
+__pycache__
