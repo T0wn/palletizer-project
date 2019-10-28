@@ -7,9 +7,11 @@ import time
 
 sim = Robolink()
 
+#boxes
 lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
-eirikBox = CustomBox.CustomBox("CustomBox", 80, 40, 50)
-boxToUse = eirikBox
+box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
+box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
+boxToUse = box2
 
 robot = sim.Item("UR10")
 tool = sim.Item("CostumTool")
@@ -62,10 +64,17 @@ def place_box(x_pos, y_pos, z_pos):
     tool.DetachAll()
     robot.MoveL( target * transl(x_pos, y_pos, z_pos - 100) )
 
-def get_pos_of_box(x, y, z):
-    print(robotFrame.Pose() * target)
+def get_pos_of_box(x, y, z, x_max, y_max):
+    if ( robodk.Pose_2_ABB(pickTarget * target)[1] < 0 ):
+        y_pos = (box_length / 2) + y * (box_length + space_between_boxes)
+    else:
+        y_pos = (box_length / 2) + ( (y_max - 1) * (box_length + space_between_boxes) ) - ( y * (box_length + space_between_boxes) )
 
-    # if ( (robotFrame.Pose() * target)[0][3] < 0 ):
+    x_pos = (box_width / 2) + x * (box_width + space_between_boxes)
+    z_pos = -box_heigth * z
+
+    return [x_pos, y_pos, z_pos]
+
 
 # ikke complete
 def box_per_direction():
@@ -80,25 +89,23 @@ def palletize():
     y_max = stablemoonster[1]
     z_max = stablemoonster[2]
 
-    for y in range(0, y_max):
+    for z in range(0, z_max):
+        for y in range(0, y_max):
+            for x in range(0, x_max):
 
-        y_pos = (box_length / 2) + y * (box_length + space_between_boxes)
+                positions = get_pos_of_box(x, y, z, x_max, y_max)
+                x_pos = positions[0]
+                y_pos = positions[1]
+                z_pos = positions[2]
 
-        for x in range(0, x_max):
+                copy_new_box()
+                pick_new_box()
+                place_box(x_pos, y_pos, z_pos)
 
-            x_pos = (box_width / 2) + x * (box_width + space_between_boxes)
-
-            copy_new_box()
-            pick_new_box()
-            place_box(x_pos, y_pos, 0)
-
-        
+    
 
 
 #programmet kjører herfra
 if __name__ == "__main__":
-    time.sleep(3)
+    time.sleep(2)
     palletize()
-    # copy_new_box()
-    # pick_new_box()
-    # place_box(0, 0, 0)

@@ -1,0 +1,13 @@
+•	Gruppen trenger ikke å ta hensyn for type vakuum-verktøy eller lignende som skal brukes, men forstå at roboten vil plukke esker ovenfra.
+•	Algoritme trenger kun å håndtere en esketype av gangen.
+•	Algoritme skal håndtere 2 pallplasser av gangen.
+•	Algoritme skal generere riktig palleteringskoordinater som kan sendes til robot direkte.
+•	Opertør kan bestemme antall esker per lag.
+•	Operatør kan bestemme start mønster på nederste lag med esker.
+•	Operatør kan bestemme om an-hvert lag skal være speilvendt i henhold til laget under seg.
+•	Algoritmen skal fungere med hvilken som helst robot og eske.
+•	Algoritmen skal stoppe og gi advarsel dersom verktøy ikke passer, roboten har ikke nok løftekapasitet eller rekkevidde.
+
+reseach
+rapport
+frist: 6.des
