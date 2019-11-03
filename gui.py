@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import project
+import CustomBox
 
 # lager ny label og inputfield
 def newInput(root, msg, pos1, pos2):
@@ -13,6 +13,16 @@ def newInput(root, msg, pos1, pos2):
 def palletize():
     print(inputArray[0].get())
 
+def addCustomBox():
+    print("hei")
+
+lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
+box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
+box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
+
+def getBoxes():
+    boxes = [lab2Box, box1, box2]
+    return boxes
 
 
 root = tk.Tk()
@@ -28,10 +38,12 @@ inputArray = []
 # inputArray.append( newInput(root, "Box heigth:", 1, 4) )
 
 label = tk.Label(root, text="Choose box:")
-label.grid(column=1, row=4)
+label.grid(column=1, row=3)
 combo = ttk.Combobox(root, width=15)
-combo['values'] = project.getBoxes()
-combo.grid(column=2, row=4)
+combo['values'] = getBoxes()
+combo.grid(column=2, row=3)
+
+btn = tk.Button(root, text="Add a custom box", command=addCustomBox).grid(column=2, row=4)
 
 inputArray.append( newInput(root, "Boxes on pallet:", 1, 5) )
 inputArray.append( newInput(root, "Boxes in x direction on layer:", 1, 6) )

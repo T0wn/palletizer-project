@@ -4,3 +4,6 @@ class CustomBox:
         self.length = length
         self.width = width
         self.height = height
+
+    def __str__(self):
+        return self.name
