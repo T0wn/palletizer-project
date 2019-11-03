@@ -1,6 +1,8 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+import project
 import CustomBox
+
 
 # lager ny label og inputfield
 def newInput(root, msg, pos1, pos2):
@@ -10,9 +12,9 @@ def newInput(root, msg, pos1, pos2):
     inpt.grid(column=pos1+1, row=pos2, padx=0, pady=2)
     return inpt
 
-def palletize():
-    for i in inputArray:
-        print(i.get())
+def palletizeClick():
+    # print(getBoxes()[combo.current()].height)
+    project.palletize(getBoxes()[combo.current()], int(inputArray[0].get()), int(inputArray[1].get()), int(inputArray[2].get()), int(inputArray[3].get()))
 
 def addCustomBox():
     print("hei")
@@ -52,6 +54,6 @@ inputArray.append( newInput(root, "Space between boxes:", 1, 8) )
 label2 = tk.Label(root, text="Mirror layers:").grid(column=1, row=9)
 checkBox = tk.Checkbutton(root).grid(column=2, row=9) 
 
-btn = tk.Button(root, text="Palletize!", command=palletize).grid(column=2, row=10)
+btn = tk.Button(root, text="Palletize!", command=palletizeClick).grid(column=2, row=10)
 
 root.mainloop()
