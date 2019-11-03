@@ -8,18 +8,14 @@ import time
 sim = Robolink()
 
 #boxes
-lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
-box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
-box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
-boxToUse = box2
-
-def getBoxes():
-    boxes = [lab2Box, box1, box2]
-    return boxes
+# lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
+# box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
+# box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
+# boxToUse = box2
 
 robot = sim.Item("UR10")
 tool = sim.Item("CostumTool")
-box = sim.Item(boxToUse.name)
+# box = sim.Item(boxToUse.name)
 
 robotFrame = sim.Item('UR10 Base')
 
@@ -35,19 +31,19 @@ leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
 rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
 
 
-box_length = boxToUse.length
-box_width = boxToUse.width
-box_heigth = boxToUse.height
-boxes_per_layer = 9
-boxes_per_pallet = 27
-space_between_boxes = 10
-speilvendt_stabling = False
-pallet_length = 500
-pallet_width = 300
+# box_length = boxToUse.length
+# box_width = boxToUse.width
+# box_heigth = boxToUse.height
+# boxes_per_layer = 9
+# boxes_per_pallet = 27
+# space_between_boxes = 10
+# speilvendt_stabling = False
+# pallet_length = 500
+# pallet_width = 300
 target = leftTarget
 
 
-def copy_new_box():
+def copy_new_box(box, box_heigth):
     box.Copy()
     new_box = sim.Paste(robotFrame)
     new_box.setPose(pickTarget * transl(0, 0, -box_heigth))
@@ -87,7 +83,9 @@ def box_per_direction():
     z = math.ceil( boxes_per_pallet / boxes_per_layer )
     return [x, y, z]
 
-def palletize():
+def palletize(box_object):
+    box = sim.Item(box_object.name)
+
     stablemoonster = box_per_direction()
     x_max = stablemoonster[0]
     y_max = stablemoonster[1]

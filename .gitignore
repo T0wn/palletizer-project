@@ -2,3 +2,4 @@
 *.rdk
 *.stl
 __pycache__
+.vscode
