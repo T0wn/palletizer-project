@@ -13,6 +13,10 @@ box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
 box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
 boxToUse = box2
 
+def getBoxes():
+    boxes = [lab2Box, box1, box2]
+    return boxes
+
 robot = sim.Item("UR10")
 tool = sim.Item("CostumTool")
 box = sim.Item(boxToUse.name)
