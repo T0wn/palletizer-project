@@ -13,7 +13,6 @@ def newInput(root, msg, pos1, pos2):
     return inpt
 
 def palletizeClick():
-    # print(getBoxes()[combo.current()].height)
     project.palletize(getBoxes()[combo.current()], int(inputArray[0].get()), int(inputArray[1].get()), int(inputArray[2].get()), int(inputArray[3].get()))
 
 def addCustomBox():
@@ -46,7 +45,7 @@ combo.grid(column=2, row=3)
 
 btn = tk.Button(root, text="Add a custom box", command=addCustomBox).grid(column=2, row=4)
 
-inputArray.append( newInput(root, "Boxes on pallet:", 1, 5) )
+inputArray.append( newInput(root, "Number of layers:", 1, 5) )
 inputArray.append( newInput(root, "Boxes in x direction on layer:", 1, 6) )
 inputArray.append( newInput(root, "Boxes in y direction on layer:", 1, 7) )
 inputArray.append( newInput(root, "Space between boxes:", 1, 8) )

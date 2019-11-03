@@ -3,7 +3,6 @@ from robolink import *
 from robodk import *
 import CustomBox
 import math
-import time
 
 sim = Robolink()
 
@@ -15,7 +14,6 @@ box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
 
 robot = sim.Item("UR10")
 tool = sim.Item("CostumTool")
-# box = sim.Item(boxToUse.name)
 
 robotFrame = sim.Item('UR10 Base')
 
@@ -30,7 +28,7 @@ pickTarget = Mat(pickFrame.Pose() * roty(pi) * rotz(pi/2))
 leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
 rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
 
-target = leftTarget
+target = rightTarget
 
 
 def copy_new_box(box, box_height):
@@ -45,14 +43,24 @@ def pick_new_box(box_length, box_width, box_height):
     robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -100) )
 
 # fix indent later
-def place_box(x_pos, y_pos, z_pos, box_height):
-    y_indent = 0
+def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes):
+    y_indent = getIndent(space_between_boxes)
     x_indent = 0
     robot.MoveJ( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - 300) )
     robot.MoveL( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - 100) )
     robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_height) )
     tool.DetachAll()
     robot.MoveL( target * transl(x_pos, y_pos, z_pos - 100) )
+
+def getIndent(space_between_boxes):
+    nr = 10
+    if (space_between_boxes < 10):
+        nr = 100
+
+    if ( robodk.Pose_2_ABB(pickTarget * target)[1] < 0 ):
+        return nr
+    else:
+        return -nr
 
 def get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes):
     if ( robodk.Pose_2_ABB(pickTarget * target)[1] < 0 ):
@@ -76,7 +84,7 @@ def box_per_direction():
 def calcheight(boxes_per_pallet, x, y):
     return math.ceil( boxes_per_pallet / (x * y) )
 
-def palletize(box_object, boxes_per_pallet, boxes_in_x_dir, boxes_in_y_dir, space_between_boxes):
+def palletize(box_object, boxes_in_z_dir, boxes_in_x_dir, boxes_in_y_dir, space_between_boxes):
     box = sim.Item(box_object.name)
     box_length = box_object.length
     box_width = box_object.width
@@ -85,7 +93,7 @@ def palletize(box_object, boxes_per_pallet, boxes_in_x_dir, boxes_in_y_dir, spac
     # stablemoonster = box_per_direction()
     x_max = boxes_in_x_dir
     y_max = boxes_in_y_dir
-    z_max = calcheight(boxes_per_pallet, boxes_in_x_dir, boxes_in_y_dir)
+    z_max = boxes_in_z_dir
 
     for z in range(0, z_max):
         for y in range(0, y_max):
@@ -98,12 +106,11 @@ def palletize(box_object, boxes_per_pallet, boxes_in_x_dir, boxes_in_y_dir, spac
 
                 copy_new_box(box, box_height)
                 pick_new_box(box_length, box_width, box_height)
-                place_box(x_pos, y_pos, z_pos, box_height)
+                place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes)
 
     
 
 
 #programmet kjører herfra
 if __name__ == "__main__":
-    time.sleep(2)
-    palletize(box2, 27, 3, 3, 10)
+    palletize(box2, 3, 3, 3, 10)
