@@ -13,10 +13,17 @@ def newInput(root, msg, pos1, pos2):
     return inpt
 
 def palletizeClick():
-    project.palletize(getBoxes()[combo.current()], int(inputArray[0].get()), int(inputArray[1].get()), int(inputArray[2].get()), int(inputArray[3].get()))
+    boxObject = getBoxes()[combo.current()]
+    target = targetCombo.current()
+    boxes_in_z_dir = int(inputArray[0].get())
+    boxes_in_x_dir = int(inputArray[1].get())
+    boxes_in_y_dir = int(inputArray[2].get())
+    space_between_boxes = int(inputArray[3].get())
+
+    project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes)
 
 def addCustomBox():
-    print("hei")
+    print("ikke implementert enda")
 
 lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
 box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
@@ -38,12 +45,17 @@ inputArray = []
 # inputArray.append( newInput(root, "Box width:", 1, 3) )
 # inputArray.append( newInput(root, "Box heigth:", 1, 4) )
 
-label = tk.Label(root, text="Choose box:").grid(column=1, row=3)
+label = tk.Label(root, text="Choose box:").grid(column=1, row=2)
 combo = ttk.Combobox(root, width=15)
 combo['values'] = getBoxes()
-combo.grid(column=2, row=3)
+combo.grid(column=2, row=2)
 
-btn = tk.Button(root, text="Add a custom box", command=addCustomBox).grid(column=2, row=4)
+btn = tk.Button(root, text="Add a custom box", command=addCustomBox).grid(column=2, row=3)
+
+targetLabel = tk.Label(root, text="Choose target:").grid(column=1, row=4)
+targetCombo = ttk.Combobox(root, width=15)
+targetCombo['values'] = ("Left target", "Rigth target")
+targetCombo.grid(column=2, row=4)
 
 inputArray.append( newInput(root, "Number of layers:", 1, 5) )
 inputArray.append( newInput(root, "Boxes in x direction on layer:", 1, 6) )
