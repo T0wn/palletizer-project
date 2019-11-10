@@ -7,9 +7,9 @@ import CustomBox
 # lager ny label og inputfield
 def newInput(root, msg, pos1, pos2):
     lbl = tk.Label(root, text=msg)
-    lbl.grid(column=pos1, row=pos2, padx=0, pady=2)
+    lbl.grid(column=pos1, row=pos2, padx=2, pady=2)
     inpt = tk.Entry(root, width=10)
-    inpt.grid(column=pos1+1, row=pos2, padx=0, pady=2)
+    inpt.grid(column=pos1+1, row=pos2, padx=2, pady=2)
     return inpt
 
 def palletizeClick():
@@ -25,11 +25,10 @@ def palletizeClick():
 def addCustomBox():
     print("ikke implementert enda")
 
-lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
-box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
-box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
-
 def getBoxes():
+    lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
+    box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
+    box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
     boxes = [lab2Box, box1, box2]
     return boxes
 
@@ -39,23 +38,20 @@ root.title("UR10 Palletizing")
 
 grid = tk.Grid()
 
-inputArray = []
-# inputArray.append( newInput(root, "Name of box to copy:", 1, 1) )
-# inputArray.append( newInput(root, "Box length:", 1, 2) )
-# inputArray.append( newInput(root, "Box width:", 1, 3) )
-# inputArray.append( newInput(root, "Box heigth:", 1, 4) )
 
-label = tk.Label(root, text="Choose box:").grid(column=1, row=2)
+label = tk.Label(root, text="Choose box:").grid(column=1, row=2, padx=2, pady=2)
 combo = ttk.Combobox(root, width=15)
 combo['values'] = getBoxes()
-combo.grid(column=2, row=2)
+combo.grid(column=2, row=2, padx=2, pady=2)
 
-btn = tk.Button(root, text="Add a custom box", command=addCustomBox).grid(column=2, row=3)
+btn = tk.Button(root, text="Add a custom box", command=addCustomBox).grid(column=2, row=3, padx=2, pady=2)
 
-targetLabel = tk.Label(root, text="Choose target:").grid(column=1, row=4)
+targetLabel = tk.Label(root, text="Choose target:").grid(column=1, row=4, padx=2, pady=2)
 targetCombo = ttk.Combobox(root, width=15)
 targetCombo['values'] = ("Left target", "Rigth target")
-targetCombo.grid(column=2, row=4)
+targetCombo.grid(column=2, row=4, padx=2, pady=2)
+
+inputArray = []
 
 inputArray.append( newInput(root, "Number of layers:", 1, 5) )
 inputArray.append( newInput(root, "Boxes in x direction on layer:", 1, 6) )

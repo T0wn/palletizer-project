@@ -42,12 +42,21 @@ def pick_new_box(box_length, box_width, box_height):
 
 
 # fix indent later
-def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target):
+def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, patern):
     y_indent = getIndent(space_between_boxes, target)
     x_indent = 0
-    robot.MoveJ( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - 300) )
-    robot.MoveL( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - 100) )
-    robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_height) )
+    rotation = patern
+
+    if (rotation == 1):
+        robot.MoveJ( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - 300) )
+        robot.MoveL( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - 100) )
+        robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_height) )
+    elif (rotation == 2):
+        moveTarget = (target * rotz(pi/2))
+        robot.MoveJ( moveTarget * transl(y_pos + y_indent, -(x_pos + x_indent), z_pos - 300) )
+        robot.MoveL( moveTarget * transl(y_pos + y_indent, -(x_pos + x_indent), z_pos - 100) )
+        robot.MoveL( moveTarget * transl(y_pos, -x_pos, z_pos - box_height) )
+
     tool.DetachAll()
     robot.MoveL( target * transl(x_pos, y_pos, z_pos - 100) )
 
@@ -87,7 +96,7 @@ def calcheight(boxes_per_pallet, x, y):
     return math.ceil( boxes_per_pallet / (x * y) )
 
 
-def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes):
+def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, layer_pattern):
     box = sim.Item(box_object.name)
     box_length = box_object.length
     box_width = box_object.width
@@ -103,11 +112,32 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
         for y in range(0, y_max):
             for x in range(0, x_max):
 
+                placeNr = layer_pattern[y][x]
+
                 positions = get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target)
                 x_pos = positions[0]
                 y_pos = positions[1]
                 z_pos = positions[2]
 
-                copy_new_box(box, box_height)
-                pick_new_box(box_length, box_width, box_height)
-                place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target)
+                if (placeNr > 0):
+                    copy_new_box(box, box_height)
+                    pick_new_box(box_length, box_width, box_height)
+                    place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, placeNr)
+
+
+
+
+testArray = [[2, 0, 2],
+            [1, 1, 1],
+            [2, 0, 2]
+]
+
+def getBoxes():
+    lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
+    box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
+    box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
+    boxes = [lab2Box, box1, box2]
+    return boxes
+
+if __name__ == "__main__":
+    palletize(getBoxes()[1], 1, 3, 3, 1, 40, testArray)

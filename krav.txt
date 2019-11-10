@@ -9,5 +9,6 @@
 •	Algoritmen skal stoppe og gi advarsel dersom verktøy ikke passer, roboten har ikke nok løftekapasitet eller rekkevidde.
 
 reseach
+rocketfarm
 rapport
 frist: 6.des
