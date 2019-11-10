@@ -141,7 +141,8 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
 
 
-
+# (rotation, x-forskyvning, y-forskyvning)
+# rotation options: 0 = plasserer ikke box      1 = plasserer box vanlig      2 = roterer box 90 grader
 testArray = [
     [(2, -30, 15), (0, 0, 0), (2, -30, -15)],
     [(1, 0, 0), (1, 0, 0), (1, 0, 0)],
