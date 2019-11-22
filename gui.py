@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import project
 import CustomBox
+import datahandler as dh
 
 
 # lager ny label og inputfield
@@ -12,55 +13,58 @@ def newInput(root, msg, pos1, pos2):
     inpt.grid(column=pos1+1, row=pos2, padx=2, pady=2)
     return inpt
 
-def palletizeClick():
-    boxObject = getBoxes()[combo.current()]
-    target = targetCombo.current()
-    boxes_in_z_dir = int(inputArray[0].get())
-    boxes_in_x_dir = int(inputArray[1].get())
-    boxes_in_y_dir = int(inputArray[2].get())
-    space_between_boxes = int(inputArray[3].get())
 
-    project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes)
+class MainFrame:
+    def __init__(self, master):
+        master.title("UR10 Palletizing")
+        self.frame = tk.Frame(master)
 
-def addCustomBox():
-    print("ikke implementert enda")
+        self.label = tk.Label(master, text="Choose box:").grid(column=1, row=2, padx=2, pady=2)
+        self.combo = ttk.Combobox(master, width=15)
+        self.combo['values'] = dh.datahandler.getBoxes()
+        self.combo.grid(column=2, row=2, padx=2, pady=2)
 
-def getBoxes():
-    lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
-    box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
-    box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
-    boxes = [lab2Box, box1, box2]
-    return boxes
+        self.btn = tk.Button(master, text="Add a custom box", command=self.addCustomBox).grid(column=2, row=3, padx=2, pady=2)
+
+        self.targetLabel = tk.Label(master, text="Choose target:").grid(column=1, row=4, padx=2, pady=2)
+        self.targetCombo = ttk.Combobox(master, width=15)
+        self.targetCombo['values'] = ("Left target", "Rigth target")
+        self.targetCombo.grid(column=2, row=4, padx=2, pady=2)
+
+        self.inputArray = []
+
+        self.inputArray.append( newInput(master, "Number of layers:", 1, 5) )
+        self.inputArray.append( newInput(master, "Boxes in x direction on layer:", 1, 6) )
+        self.inputArray.append( newInput(master, "Boxes in y direction on layer:", 1, 7) )
+        self.inputArray.append( newInput(master, "Space between boxes:", 1, 8) )
+
+        self.label2 = tk.Label(master, text="Mirror layers:").grid(column=1, row=9)
+        self.checkBox = tk.Checkbutton(master).grid(column=2, row=9) 
+
+        self.btn = tk.Button(master, text="Palletize!", command=self.palletizeClick).grid(column=2, row=10)
+
+    
+    def palletizeClick(self):
+        boxObject = dh.datahandler.getBoxes()[self.combo.current()]
+        target = self.targetCombo.current()
+        boxes_in_z_dir = int(self.inputArray[0].get())
+        boxes_in_x_dir = int(self.inputArray[1].get())
+        boxes_in_y_dir = int(self.inputArray[2].get())
+        space_between_boxes = int(self.inputArray[3].get())
+
+        project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes)
+
+    def addCustomBox(self):
+        print("ikke implementert enda")
 
 
-root = tk.Tk()
-root.title("UR10 Palletizing")
-
-grid = tk.Grid()
 
 
-label = tk.Label(root, text="Choose box:").grid(column=1, row=2, padx=2, pady=2)
-combo = ttk.Combobox(root, width=15)
-combo['values'] = getBoxes()
-combo.grid(column=2, row=2, padx=2, pady=2)
 
-btn = tk.Button(root, text="Add a custom box", command=addCustomBox).grid(column=2, row=3, padx=2, pady=2)
+def main():
+    root = tk.Tk()
+    app = MainFrame(root)
+    root.mainloop()
 
-targetLabel = tk.Label(root, text="Choose target:").grid(column=1, row=4, padx=2, pady=2)
-targetCombo = ttk.Combobox(root, width=15)
-targetCombo['values'] = ("Left target", "Rigth target")
-targetCombo.grid(column=2, row=4, padx=2, pady=2)
-
-inputArray = []
-
-inputArray.append( newInput(root, "Number of layers:", 1, 5) )
-inputArray.append( newInput(root, "Boxes in x direction on layer:", 1, 6) )
-inputArray.append( newInput(root, "Boxes in y direction on layer:", 1, 7) )
-inputArray.append( newInput(root, "Space between boxes:", 1, 8) )
-
-label2 = tk.Label(root, text="Mirror layers:").grid(column=1, row=9)
-checkBox = tk.Checkbutton(root).grid(column=2, row=9) 
-
-btn = tk.Button(root, text="Palletize!", command=palletizeClick).grid(column=2, row=10)
-
-root.mainloop()
+if __name__ == '__main__':
+    main()
