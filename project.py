@@ -9,9 +9,9 @@ sim = Robolink()
 robot = sim.Item("UR10")
 tool = sim.Item("CostumTool")
 
-robotFrame = sim.Item('UR10 Base')
 
 #frames
+robotFrame = sim.Item('UR10 Base')
 pickFrame = sim.Item("pickFrame")
 leftFrame = sim.Item("placeFrameLeft")
 rightFrame = sim.Item("placeFrameRight")
@@ -41,15 +41,13 @@ def pick_new_box(box_length, box_width, box_height):
     robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -100) )
 
 
-# fix indent later
 def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, patern):
     y_indent = getIndent(space_between_boxes, target)
     x_indent = 0
     
     # brukes hvis det ønskes custom plasering/rotasjon av boxer
-    rotation = patern[0]
-    x_move = patern[1]
-    y_move = patern[2]
+    rotation, x_move, y_move = patern
+    
 
     if (rotation == 1):
         robot.MoveJ( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 250) )
@@ -67,14 +65,15 @@ def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, pate
 
 
 def getIndent(space_between_boxes, target):
-    nr = 10
+    indent = 10
     if (space_between_boxes < 10):
-        nr = 100
+        indent = 100
 
+    # setter fortegn på indent utfra hvilken side av roboten target er på
     if ( robodk.Pose_2_ABB(pickTarget * target)[1] < 0 ):
-        return nr
+        return indent
     else:
-        return -nr
+        return -indent
 
 
 def get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target):
@@ -126,10 +125,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
                 placeNr = layer_pattern[y][x][0]
 
-                positions = get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target)
-                x_pos = positions[0]
-                y_pos = positions[1]
-                z_pos = positions[2]
+                x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
                 if (placeNr > 0):
                     copy_new_box(box, box_height)
@@ -140,7 +136,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
 
 
-
+# TODO les array andre veien utfra hvor den stabler.
 # (rotation, x-forskyvning, y-forskyvning)
 # rotation options: 0 = plasserer ikke box      1 = plasserer box vanlig      2 = roterer box 90 grader
 testArray = [
@@ -157,4 +153,4 @@ def getBoxes():
     return boxes
 
 if __name__ == "__main__":
-    palletize(getBoxes()[1], 1, 3, 3, 1, 20, layer_pattern = testArray)
+    palletize(getBoxes()[1], 1, 3, 3, 2, 20, layer_pattern = testArray)
