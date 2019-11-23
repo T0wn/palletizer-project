@@ -14,9 +14,11 @@ def newInput(root, msg, pos1, pos2):
     return inpt
 
 
+
 class MainFrame:
     def __init__(self, master):
         master.title("UR10 Palletizing")
+        self.master = master
         self.frame = tk.Frame(master)
 
         self.label = tk.Label(master, text="Choose box:").grid(column=1, row=2, padx=2, pady=2)
@@ -43,6 +45,10 @@ class MainFrame:
 
         self.btn = tk.Button(master, text="Palletize!", command=self.palletizeClick).grid(column=2, row=10)
 
+
+    def updateComboBox(self):
+        self.combo['values'] = dh.datahandler.getBoxes()
+
     
     def palletizeClick(self):
         boxObject = dh.datahandler.getBoxes()[self.combo.current()]
@@ -54,13 +60,45 @@ class MainFrame:
 
         project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes)
 
+
     def addCustomBox(self):
-        print("ikke implementert enda")
+        self.newWindow = tk.Toplevel(self.master)
+        self.app = newBoxFrame(self.newWindow, self)
+
+
+
+class newBoxFrame:
+    def __init__(self, master, mainFrame):
+        self.master = master
+        self.mainFrame = mainFrame
+        self.frame = tk.Frame(master)
+
+        self.inputArray = []
+        self.inputArray.append( newInput(master, "name:", 1, 1) )
+        self.inputArray.append( newInput(master, "length:", 1, 2) )
+        self.inputArray.append( newInput(master, "width:", 1, 3) )
+        self.inputArray.append( newInput(master, "height:", 1, 4) )
+
+        self.addButton = tk.Button(master, text="Add box!", command=self.addBoxClick).grid(column=2, row=5, padx=60, pady=5)
+        self.msgBox = tk.Label(master, text="").grid(column=2, row=6)
+
+
+    def addBoxClick(self):
+        name = str(self.inputArray[0].get())
+        length = int(self.inputArray[1].get())
+        width = int(self.inputArray[2].get())
+        height = int(self.inputArray[3].get())
+
+        box = CustomBox.CustomBox(name, length, width, height)
+
+        dh.datahandler.addBox(box)
+        self.mainFrame.updateComboBox()
+        self.msgBox = tk.Label(self.master, text="Box created!").grid(column=2, row=6)
 
 
 
 
-
+# Starter gui
 def main():
     root = tk.Tk()
     app = MainFrame(root)
