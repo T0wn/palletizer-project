@@ -9,7 +9,7 @@ class datahandler:
     def refreshBoxes():
         datahandler.boxes = []
 
-        with open('appData/boxes.json', 'r') as file:
+        with open('appdata/boxes.json', 'r') as file:
             data = json.load(file)
             
             for i in data:
@@ -26,7 +26,7 @@ class datahandler:
         datahandler.refreshBoxes()
         datahandler.boxes.append(object)
 
-        with open('appData/boxes.json', 'w') as outfile:
+        with open('appdata/boxes.json', 'w') as outfile:
             json.dump(datahandler.boxes, outfile, default=datahandler.obj_dict)
     
     @staticmethod

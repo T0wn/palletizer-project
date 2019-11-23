@@ -1,4 +1,3 @@
 *.ini
-# *.rdk
 __pycache__
 .vscode

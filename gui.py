@@ -3,6 +3,7 @@ import tkinter.ttk as ttk
 import project
 import CustomBox
 import datahandler as dh
+import ast
 
 
 # lager ny label og inputfield
@@ -40,10 +41,14 @@ class MainFrame:
         self.inputArray.append( newInput(master, "Boxes in y direction on layer:", 1, 7) )
         self.inputArray.append( newInput(master, "Space between boxes:", 1, 8) )
 
-        self.label2 = tk.Label(master, text="Mirror layers:").grid(column=1, row=9)
-        self.checkBox = tk.Checkbutton(master).grid(column=2, row=9) 
+        self.paternLabel = tk.Label(master, text="Layer pattern (optional):").grid(column=1, row=9)
+        self.patternInput = tk.Text(master, height=4, width=30)
+        self.patternInput.grid(column=2, row=9)
 
-        self.btn = tk.Button(master, text="Palletize!", command=self.palletizeClick).grid(column=2, row=10)
+        self.label2 = tk.Label(master, text="Mirror layers:").grid(column=1, row=10)
+        self.checkBox = tk.Checkbutton(master).grid(column=2, row=10) 
+
+        self.btn = tk.Button(master, text="Palletize!", command=self.palletizeClick).grid(column=2, row=11)
 
 
     def updateComboBox(self):
@@ -58,7 +63,19 @@ class MainFrame:
         boxes_in_y_dir = int(self.inputArray[2].get())
         space_between_boxes = int(self.inputArray[3].get())
 
-        project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes)
+        patternText = self.patternInput.get("1.0", "end")
+        
+        # sjekker om textfeltet er tomt. Det er et linjeskift i feltet by default
+        if (patternText != "\n"):
+            pattern = self.parsePattern(patternText)
+            project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, layer_pattern=pattern)
+        else:
+            project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes)
+
+
+    # konverterer en string skrevet som en array til en array
+    def parsePattern(self, patternText):
+        return ast.literal_eval(patternText)
 
 
     def addCustomBox(self):

@@ -2,6 +2,7 @@
 from robolink import *
 from robodk import *
 import CustomBox
+import datahandler as dh
 import math
 
 sim = Robolink()
@@ -145,12 +146,5 @@ testArray = [
     [(2, 30, 15), (0, 0, 0), (2, 30, -15)]
 ]
 
-def getBoxes():
-    lab2Box = CustomBox.CustomBox("WoodBox", 48, 48, 48)
-    box1 = CustomBox.CustomBox("Box1", 80, 40, 50)
-    box2 = CustomBox.CustomBox("Box2", 100, 80, 50)
-    boxes = [lab2Box, box1, box2]
-    return boxes
-
 if __name__ == "__main__":
-    palletize(getBoxes()[1], 1, 3, 3, 2, 20, layer_pattern = testArray)
+    palletize(dh.datahandler.getBoxes()[1], 1, 3, 3, 2, 20, layer_pattern = testArray)
