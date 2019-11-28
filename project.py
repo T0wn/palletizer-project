@@ -49,22 +49,11 @@ def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, pate
     # brukes hvis det ønskes custom plasering/rotasjon av boxer
     rotation, x_move, y_move = patern
 
-      
-    if (rotation == 0):
-        pass
-    if (rotation == 1):
-        robot.MoveJ( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 250) )
-        robot.MoveL( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 50) )
-        robot.MoveL( target * transl(x_pos + y_move, y_pos + x_move, z_pos - box_height) )
-        tool.DetachAll()
-        robot.MoveL( target * transl(x_pos + y_move, y_pos + x_move, z_pos - box_height - 100) )
-    elif (rotation == 2):
-        moveTarget = (target * rotz(pi/2))
-        robot.MoveJ( moveTarget * transl(y_pos + x_move + y_indent, -(x_pos + y_move + x_indent), z_pos - box_height - 250) )
-        robot.MoveL( moveTarget * transl(y_pos + x_move + y_indent, -(x_pos + y_move + x_indent), z_pos - box_height - 50) )
-        robot.MoveL( moveTarget * transl(y_pos + x_move, -(x_pos + y_move), z_pos - box_height) )
-        tool.DetachAll()
-        robot.MoveL( moveTarget * transl(y_pos + x_move, -(x_pos + y_move), z_pos - box_height - 50) )
+    robot.MoveJ( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 250) * rotz((rotation/180) * pi))
+    robot.MoveL( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 50) * rotz((rotation/180) * pi))
+    robot.MoveL( target * transl(x_pos + y_move, y_pos + x_move, z_pos - box_height) * rotz((rotation/180) * pi))
+    tool.DetachAll()
+    robot.MoveL( target * transl(x_pos + y_move, y_pos + x_move, z_pos - box_height - 100) )  
 
 
 def getIndent(space_between_boxes, target):
@@ -102,6 +91,7 @@ def box_per_direction():
 def calcheight(boxes_per_pallet, x, y):
     return math.ceil( boxes_per_pallet / (x * y) )
 
+
 def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, layer_pattern = None):
     box = sim.Item(box_object.name)
     box_length = box_object.length
@@ -120,17 +110,20 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
         for y in range(0, y_max):
             layer_pattern.append([])
             for x in range(0, x_max):
-                layer_pattern[y].append( (1, 0, 0) )
+                layer_pattern[y].append( (0, 0, 0) )
 
     for z in range(0, z_max):
         for y in range(0, y_max):
             for x in range(0, x_max):
 
+                rotation = layer_pattern[y][x][0]
                 x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
-                copy_new_box(box, box_height)
-                pick_new_box(box_length, box_width, box_height)
-                place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, layer_pattern[y][x])
+                # sjekker om box skal plasseres eller ikke
+                if (rotation >= 0):
+                    copy_new_box(box, box_height)
+                    pick_new_box(box_length, box_width, box_height)
+                    place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, layer_pattern[y][x])
 
     robot.MoveJ(home)
 
@@ -138,11 +131,11 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
 # TODO les array andre veien utfra hvor den stabler.
 # (rotation, x-forskyvning, y-forskyvning)
-# rotation options: 0 = plasserer ikke box      1 = plasserer box vanlig      2 = roterer box 90 grader
+# rotation options: -1 = plasserer ikke box      x = roterer x grader
 testArray = [
-    [(2, -30, 15), (0, 0, 0), (2, -30, -15)],
-    [(1, 0, 0), (1, 0, 0), (1, 0, 0)],
-    [(2, 30, 15), (0, 0, 0), (2, 30, -15)]
+    [(90, -30, 15), (-1, 0, 0), (90, -30, -15)],
+    [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
+    [(90, 30, 15), (-1, 0, 0), (90, 30, -15)]
 ]
 
 if __name__ == "__main__":
