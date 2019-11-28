@@ -48,8 +48,10 @@ def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, pate
     
     # brukes hvis det ønskes custom plasering/rotasjon av boxer
     rotation, x_move, y_move = patern
-    
 
+      
+    if (rotation == 0):
+        pass
     if (rotation == 1):
         robot.MoveJ( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 250) )
         robot.MoveL( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 50) )
@@ -124,14 +126,11 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
         for y in range(0, y_max):
             for x in range(0, x_max):
 
-                placeNr = layer_pattern[y][x][0]
-
                 x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
-                if (placeNr > 0):
-                    copy_new_box(box, box_height)
-                    pick_new_box(box_length, box_width, box_height)
-                    place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, layer_pattern[y][x])
+                copy_new_box(box, box_height)
+                pick_new_box(box_length, box_width, box_height)
+                place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, layer_pattern[y][x])
 
     robot.MoveJ(home)
 
