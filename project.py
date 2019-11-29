@@ -42,18 +42,15 @@ def pick_new_box(box_length, box_width, box_height):
     robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -100) )
 
 
-def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, patern):
+def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation):
     y_indent = getIndent(space_between_boxes, target)
     x_indent = 0
-    
-    # brukes hvis det ønskes custom plasering/rotasjon av boxer
-    rotation, x_move, y_move = patern
 
     robot.MoveJ( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - box_height - 250) * rotz((rotation/180) * pi))
     robot.MoveL( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - box_height - 50) * rotz((rotation/180) * pi))
     robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_height) * rotz((rotation/180) * pi))
     tool.DetachAll()
-    robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_height - 100) )  
+    robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_height - 100) * rotz((rotation/180) * pi))  
 
 
 def getIndent(space_between_boxes, target):
@@ -80,16 +77,19 @@ def get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_he
     return [x_pos, y_pos, z_pos]
 
 
-# ikke complete
-def box_per_direction():
-    x = 3
-    y = 3
-    z = math.ceil( boxes_per_pallet / boxes_per_layer )
-    return [x, y, z]
+def get_mirrored_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target):
+    return get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
 
-def calcheight(boxes_per_pallet, x, y):
-    return math.ceil( boxes_per_pallet / (x * y) )
+def get_default_layer_pattern():
+    layer_pattern = []
+    for y in range(0, y_max):
+        layer_pattern.append([])
+        for x in range(0, x_max):
+            layer_pattern[y].append( (0, 0, 0) )
+    return layer_pattern
+
+
 
 
 def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern = None):
@@ -99,32 +99,33 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
     box_height = box_object.height
     target = getTarget(targetnr)
 
-    # stablemoonster = box_per_direction()
+    # genererer default pattern, hvis et custom pattern ikke er oppgitt
+    if (layer_pattern == None):
+        layer_pattern = get_default_layer_pattern()
+
     x_max = boxes_in_x_dir
     y_max = boxes_in_y_dir
     z_max = boxes_in_z_dir
-
-    # genererer default pattern, hvis et custom pattern ikke er oppgitt
-    if (layer_pattern == None):
-        layer_pattern = []
-        for y in range(0, y_max):
-            layer_pattern.append([])
-            for x in range(0, x_max):
-                layer_pattern[y].append( (0, 0, 0) )
 
     for z in range(0, z_max):
         for y in range(0, y_max):
             for x in range(0, x_max):
 
-                rotation = layer_pattern[y][x][0]
-                x_move, y_move = layer_pattern[y][x][1:3]
-                x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
+                rotation, x_move, y_move = layer_pattern[y][x]
+
+                if (mirrored & (z % 2 == 1) & (rotation >= 0)):
+                    rotation = layer_pattern[y][x][0] + 180
+                    x_pos, y_pos, z_pos = get_mirrored_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
+                else:
+                    rotation = layer_pattern[y][x][0]
+                    x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
                 # sjekker om box skal plasseres eller ikke
                 if (rotation >= 0):
                     copy_new_box(box, box_height)
                     pick_new_box(box_length, box_width, box_height)
-                    place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, layer_pattern[y][x])
+                    place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation)
+                    robot.MoveJ(home)
 
     robot.MoveJ(home)
 
@@ -140,5 +141,11 @@ testArray = [
     [(90, 30, 15), (-1, 0, 0), (90, 30, -15)]
 ]
 
+mirrorTestArray = [
+    [(0, 0, 0), (90, 0, 0), (-1, -30, -15)],
+    [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
+    [(-1, 30, 15), (-1, 0, 0), (90, 0, 0)]
+]
+
 if __name__ == "__main__":
-    palletize(dh.datahandler.getBoxes()[0], 1, 3, 3, 2, 20, True, layer_pattern = testArray)
+    palletize(dh.datahandler.getBoxes()[0], 1, 3, 3, 2, 20, True, layer_pattern = mirrorTestArray)
