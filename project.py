@@ -49,11 +49,11 @@ def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, pate
     # brukes hvis det ønskes custom plasering/rotasjon av boxer
     rotation, x_move, y_move = patern
 
-    robot.MoveJ( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 250) * rotz((rotation/180) * pi))
-    robot.MoveL( target * transl(x_pos + y_move + x_indent, y_pos + x_move + y_indent, z_pos - box_height - 50) * rotz((rotation/180) * pi))
-    robot.MoveL( target * transl(x_pos + y_move, y_pos + x_move, z_pos - box_height) * rotz((rotation/180) * pi))
+    robot.MoveJ( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - box_height - 250) * rotz((rotation/180) * pi))
+    robot.MoveL( target * transl(x_pos + x_indent, y_pos + y_indent, z_pos - box_height - 50) * rotz((rotation/180) * pi))
+    robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_height) * rotz((rotation/180) * pi))
     tool.DetachAll()
-    robot.MoveL( target * transl(x_pos + y_move, y_pos + x_move, z_pos - box_height - 100) )  
+    robot.MoveL( target * transl(x_pos, y_pos, z_pos - box_height - 100) )  
 
 
 def getIndent(space_between_boxes, target):
@@ -68,13 +68,13 @@ def getIndent(space_between_boxes, target):
         return -indent
 
 
-def get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target):
+def get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target):
     if ( robodk.Pose_2_ABB(pickTarget * target)[1] < 0 ):
-        y_pos = (box_length / 2) + y * (box_length + space_between_boxes)
+        y_pos = (box_length / 2) + y * (box_length + space_between_boxes) + x_move
     else:
-        y_pos = (box_length / 2) + ( (y_max - 1) * (box_length + space_between_boxes) ) - ( y * (box_length + space_between_boxes) )
+        y_pos = (box_length / 2) + ( (y_max - 1) * (box_length + space_between_boxes) ) - ( y * (box_length + space_between_boxes) ) + x_move
 
-    x_pos = (box_width / 2) + x * (box_width + space_between_boxes)
+    x_pos = (box_width / 2) + x * (box_width + space_between_boxes) + y_move
     z_pos = -box_height * z
 
     return [x_pos, y_pos, z_pos]
@@ -117,7 +117,8 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
             for x in range(0, x_max):
 
                 rotation = layer_pattern[y][x][0]
-                x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target)
+                x_move, y_move = layer_pattern[y][x][1:3]
+                x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
                 # sjekker om box skal plasseres eller ikke
                 if (rotation >= 0):
@@ -130,6 +131,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
 
 # TODO les array andre veien utfra hvor den stabler.
+
 # (rotation, x-forskyvning, y-forskyvning)
 # rotation options: -1 = plasserer ikke box      x = roterer x grader
 testArray = [
