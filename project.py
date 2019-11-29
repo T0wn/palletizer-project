@@ -92,7 +92,7 @@ def calcheight(boxes_per_pallet, x, y):
     return math.ceil( boxes_per_pallet / (x * y) )
 
 
-def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, layer_pattern = None):
+def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern = None):
     box = sim.Item(box_object.name)
     box_length = box_object.length
     box_width = box_object.width
@@ -141,4 +141,4 @@ testArray = [
 ]
 
 if __name__ == "__main__":
-    palletize(dh.datahandler.getBoxes()[1], 1, 3, 3, 2, 20, layer_pattern = testArray)
+    palletize(dh.datahandler.getBoxes()[0], 1, 3, 3, 2, 20, True, layer_pattern = testArray)
