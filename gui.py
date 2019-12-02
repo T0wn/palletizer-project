@@ -49,7 +49,7 @@ class MainFrame:
 
         self.inputArray.append(newInput(master, "Indentation in X", 1, 12))
         self.inputArray.append(newInput(master, "Indentation in Y:", 1, 13))
-        self.inputArray.append(newInput(master, "Indentation in Z:", 1, 13))
+        self.inputArray.append(newInput(master, "Indentation in Z:", 1, 14))
 
 
         self.patternLabel = tk.Label(master, text="Layer pattern (optional):")
