@@ -113,7 +113,12 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
         for y in range(0, y_max):
             for x in range(0, x_max):
 
-                rotation, x_move, y_move = layer_pattern[y][x]
+                # Sjekker hvilken side av roboten targetet er på for lesing av egendefinert array
+                if ( robodk.Pose_2_ABB(pickTarget * target)[1] < 0 ):
+                    rotation, x_move, y_move = layer_pattern[(y_max-1) - y][x]
+                else:
+                    rotation, x_move, y_move = layer_pattern[y][x]
+
 
                 if (mirrored & (z % 2 == 1) & (rotation >= 0)):
                     rotation = layer_pattern[y][x][0] + 180
@@ -122,6 +127,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
                     rotation = layer_pattern[y][x][0]
                     x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
+
                 # sjekker om box skal plasseres eller ikke
                 if (rotation >= 0):
                     copy_new_box(box, box_height)
@@ -129,11 +135,9 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
                     place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation)
                     robot.MoveJ(home)
 
-    robot.MoveJ(home)
 
 
 
-# TODO les array andre veien utfra hvor den stabler.
 
 # (rotation, x-forskyvning, y-forskyvning)
 # rotation options: -1 = plasserer ikke box      x = roterer x grader
@@ -144,11 +148,11 @@ testArray = [
 ]
 
 mirrorTestArray = [
-    [(0, 0, 150), (90, 0, 100), (-1, 0, 100)],
-    [(0, 0, 100), (0, 0, 100), (0, 0, 100)],
-    [(-1, 0, 100), (-1, 0, 100), (90, 50, 100)]
+    [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
+    [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
+    [(0, 0, 0), (0, 0, 0), (-1, 0, 0)]
 ]
 
 if __name__ == "__main__":
-    palletize(dh.datahandler.getBoxes()[0], 1, 3, 3, 2, 20, True, layer_pattern = mirrorTestArray)
+    palletize(dh.datahandler.getBoxes()[1], 0, 3, 3, 2, 20, False, layer_pattern = testArray)# mirrorTestArray)
     # print( get_mirrored_pos_of_box(0, 0, 0, 0, 0, 3, 3, 48, 48, 48, 20, getTarget(1)) )
