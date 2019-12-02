@@ -35,11 +35,11 @@ def copy_new_box(box, box_height):
     new_box.setPose(pickTarget * transl(0, 0, -box_height))
 
 
-def pick_new_box(box_length, box_width, box_height):
+def pick_new_box(box_length, box_width, box_height, layerHeight):
     robot.MoveJ( pickTarget * transl(box_width / 2, box_length / 2, -100) )
     robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -box_height) )
     tool.AttachClosest()
-    robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -100) )
+    robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -((box_height * (1 + layerHeight)) + 100)) )
 
 
 def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation):
@@ -154,5 +154,5 @@ mirrorTestArray = [
 ]
 
 if __name__ == "__main__":
-    palletize(dh.datahandler.getBoxes()[1], 0, 3, 3, 2, 20, False, layer_pattern = testArray)# mirrorTestArray)
-    # print( get_mirrored_pos_of_box(0, 0, 0, 0, 0, 3, 3, 48, 48, 48, 20, getTarget(1)) )
+    # palletize(dh.datahandler.getBoxes()[1], 1, 3, 3, 2, 20, layer_pattern = testArray)
+    palletize( dh.datahandler.getBoxes()[2], 1, 4, 1, 3, 5)#, layer_pattern = testArray )
