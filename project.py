@@ -7,7 +7,8 @@ import math
 
 
 def create_target_from_base(target_cords):
-    return Mat(robotFrame.Pose()) * transl(target_cords[0], target_cords[1] -1000, 0) * roty(pi)
+    x_move, y_move, z_move = target_cords
+    return Mat(robotFrame.Pose()) * transl(x_move, y_move-1000, z_move) * roty(pi)
 
 
 def getTarget(targetnr):
@@ -143,12 +144,12 @@ leftFrame = sim.Item("placeFrameLeft")
 rightFrame = sim.Item("placeFrameRight")
 
 if not leftFrame.Valid():
-    leftTarget = create_target_from_base([900, -550])
+    leftTarget = create_target_from_base([900, -550, 0])
 else:
     leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
 
 if not rightFrame.Valid():
-    rightTarget = create_target_from_base([900, 200])
+    rightTarget = create_target_from_base([900, 200, 0])
 else:
     rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
 
