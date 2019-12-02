@@ -64,10 +64,6 @@ class MainFrame:
         self.palletize_btn = tk.Button(master, text="Palletize!", command=self.palletizeClick)
         self.palletize_btn.grid(column=2, row=18)
 
-    def TextBoxUpdate(self, master):
-        if self.targetCombo.current() == 0:
-            self.newWindow = tk.Toplevel(self.master)
-            self.app = customPlane(self.newWindow, self)
 
 
 
