@@ -4,9 +4,9 @@
 •	-check -Algoritme skal generere riktig palleteringskoordinater som kan sendes til robot direkte.
 •	-check -Opertør kan bestemme antall esker per lag.
 •	-check Operatør kan bestemme start mønster på nederste lag med esker.
-•	Operatør kan bestemme om an-hvert lag skal være speilvendt i henhold til laget under seg.
+•	-check Operatør kan bestemme om an-hvert lag skal være speilvendt i henhold til laget under seg.
 •	-semi check (ikke testet flere roboter) -Algoritmen skal fungere med hvilken som helst robot og eske.
-•	Algoritmen skal stoppe og gi advarsel dersom verktøy ikke passer, roboten har ikke nok løftekapasitet eller rekkevidde.
+•	-semi check (RoboDK gjør dette for oss) Algoritmen skal stoppe og gi advarsel dersom verktøy ikke passer, roboten har ikke nok løftekapasitet eller rekkevidde.
 
 koding TODO:
 * teste algoritme på flere roboter
