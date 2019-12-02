@@ -67,21 +67,23 @@ def getIndent(space_between_boxes, target):
 
 def get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target):
     if ( robodk.Pose_2_ABB(pickTarget * target)[1] < 0 ):
-        y_pos = (box_length / 2) + y * (box_length + space_between_boxes) + x_move
+        y_pos = (box_length / 2) + y * (box_length + space_between_boxes) + y_move
     else:
-        y_pos = (box_length / 2) + ( (y_max - 1) * (box_length + space_between_boxes) ) - ( y * (box_length + space_between_boxes) ) + x_move
+        y_pos = (box_length / 2) + ( (y_max - 1) * (box_length + space_between_boxes) ) - ( y * (box_length + space_between_boxes) ) + y_move
 
-    x_pos = (box_width / 2) + x * (box_width + space_between_boxes) + y_move
+    x_pos = (box_width / 2) + x * (box_width + space_between_boxes) + x_move
     z_pos = -box_height * z
 
     return [x_pos, y_pos, z_pos]
 
 
-def get_mirrored_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target):
-    return get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
+def get_mirrored_pos_of_box(x, y, z, x_move, y_move, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target):
+    mirrored_y = (y_max - 1) - y
+    print("x_move: " + str(x_move) + "   y_move: " + str(y_move))
+    return get_pos_of_box(x, mirrored_y, z, x_move, -y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
 
-def get_default_layer_pattern():
+def get_default_layer_pattern(x_max, y_max):
     layer_pattern = []
     for y in range(0, y_max):
         layer_pattern.append([])
@@ -99,13 +101,13 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
     box_height = box_object.height
     target = getTarget(targetnr)
 
-    # genererer default pattern, hvis et custom pattern ikke er oppgitt
-    if (layer_pattern == None):
-        layer_pattern = get_default_layer_pattern()
-
     x_max = boxes_in_x_dir
     y_max = boxes_in_y_dir
     z_max = boxes_in_z_dir
+
+    # genererer default pattern, hvis et custom pattern ikke er oppgitt
+    if (layer_pattern == None):
+        layer_pattern = get_default_layer_pattern(x_max, y_max)
 
     for z in range(0, z_max):
         for y in range(0, y_max):
@@ -115,7 +117,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
                 if (mirrored & (z % 2 == 1) & (rotation >= 0)):
                     rotation = layer_pattern[y][x][0] + 180
-                    x_pos, y_pos, z_pos = get_mirrored_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
+                    x_pos, y_pos, z_pos = get_mirrored_pos_of_box(x, y, z, x_move, y_move, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target)
                 else:
                     rotation = layer_pattern[y][x][0]
                     x_pos, y_pos, z_pos = get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
@@ -142,10 +144,11 @@ testArray = [
 ]
 
 mirrorTestArray = [
-    [(0, 0, 0), (90, 0, 0), (-1, -30, -15)],
-    [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
-    [(-1, 30, 15), (-1, 0, 0), (90, 0, 0)]
+    [(0, 0, 150), (90, 0, 100), (-1, 0, 100)],
+    [(0, 0, 100), (0, 0, 100), (0, 0, 100)],
+    [(-1, 0, 100), (-1, 0, 100), (90, 50, 100)]
 ]
 
 if __name__ == "__main__":
     palletize(dh.datahandler.getBoxes()[0], 1, 3, 3, 2, 20, True, layer_pattern = mirrorTestArray)
+    # print( get_mirrored_pos_of_box(0, 0, 0, 0, 0, 3, 3, 48, 48, 48, 20, getTarget(1)) )
