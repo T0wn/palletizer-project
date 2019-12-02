@@ -35,11 +35,11 @@ def copy_new_box(box, box_height):
     new_box.setPose(pickTarget * transl(0, 0, -box_height))
 
 
-def pick_new_box(box_length, box_width, box_height):
+def pick_new_box(box_length, box_width, box_height, layerHeight):
     robot.MoveJ( pickTarget * transl(box_width / 2, box_length / 2, -100) )
     robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -box_height) )
     tool.AttachClosest()
-    robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -100) )
+    robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -((box_height * (1 + layerHeight)) + 100)) )
 
 
 def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, patern):
@@ -123,7 +123,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
                 # sjekker om box skal plasseres eller ikke
                 if (rotation >= 0):
                     copy_new_box(box, box_height)
-                    pick_new_box(box_length, box_width, box_height)
+                    pick_new_box(box_length, box_width, box_height, z)
                     place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, layer_pattern[y][x])
 
     robot.MoveJ(home)
@@ -141,4 +141,5 @@ testArray = [
 ]
 
 if __name__ == "__main__":
-    palletize(dh.datahandler.getBoxes()[1], 1, 3, 3, 2, 20, layer_pattern = testArray)
+    # palletize(dh.datahandler.getBoxes()[1], 1, 3, 3, 2, 20, layer_pattern = testArray)
+    palletize( dh.datahandler.getBoxes()[2], 1, 4, 1, 3, 5)#, layer_pattern = testArray )
