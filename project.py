@@ -23,6 +23,7 @@ pickTarget = Mat(pickFrame.Pose() * roty(pi) * rotz(pi/2))
 leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
 rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
 
+print("righttarget: " + str(rightTarget))
 
 def getTarget(targetnr):
     targets = [leftTarget, rightTarget]
@@ -94,12 +95,19 @@ def get_default_layer_pattern(x_max, y_max):
 
 
 
-def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern = None):
+def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern = None, target_cords = None):
     box = sim.Item(box_object.name)
     box_length = box_object.length
     box_width = box_object.width
     box_height = box_object.height
-    target = getTarget(targetnr)
+
+    if (target_cords == None):
+        target = getTarget(targetnr)
+        print(target)
+    else:
+        print("base:\n" + str( Mat(robotFrame.Pose() * transl(target_cords[0], target_cords[1], 0)) * roty(pi) * rotz(pi/2) ))
+        target = Mat(robotFrame.Pose()) * transl(target_cords[0], target_cords[1] -1000, 0) * roty(pi) 
+        
 
     x_max = boxes_in_x_dir
     y_max = boxes_in_y_dir
@@ -131,7 +139,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
                 # sjekker om box skal plasseres eller ikke
                 if (rotation >= 0):
                     copy_new_box(box, box_height)
-                    pick_new_box(box_length, box_width, box_height)
+                    pick_new_box(box_length, box_width, box_height, z)
                     place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation)
                     robot.MoveJ(home)
 
@@ -154,5 +162,4 @@ mirrorTestArray = [
 ]
 
 if __name__ == "__main__":
-    # palletize(dh.datahandler.getBoxes()[1], 1, 3, 3, 2, 20, layer_pattern = testArray)
-    palletize( dh.datahandler.getBoxes()[2], 1, 4, 1, 3, 5)#, layer_pattern = testArray )
+    palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, target_cords= [500, 200], layer_pattern = testArray )
