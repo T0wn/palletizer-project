@@ -89,11 +89,14 @@ class MainFrame:
         if (patternText != "\n"):
             pattern = self.parsePattern(patternText)
             if self.targetCombo.current() == 0:
-                project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir,
-                                  space_between_boxes, mirrored, layer_pattern=pattern, )
-            project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern=pattern)
+                project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern=pattern, target_cords=plane_cords)
+            else:
+                project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern=pattern)
         else:
-            project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored)
+            if self.targetCombo.current() == 0:
+                project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, target_cords=plane_cords)
+            else:
+                project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored)
 
     # konverterer en string skrevet som en array til en array
     def parsePattern(self, patternText):
