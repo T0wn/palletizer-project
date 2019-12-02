@@ -10,18 +10,29 @@ sim = Robolink()
 robot = sim.Item("UR10")
 tool = sim.Item("CostumTool")
 
+def create_target_from_base(target_cords):
+    return Mat(robotFrame.Pose()) * transl(target_cords[0], target_cords[1] -1000, 0) * roty(pi)
+
 
 #frames
 robotFrame = sim.Item('UR10 Base')
 pickFrame = sim.Item("pickFrame")
-leftFrame = sim.Item("placeFrameLeft")
-rightFrame = sim.Item("placeFrameRight")
+leftFrame = sim.Item("placeFrameLeft1")
+rightFrame = sim.Item("placeFrameRight1")
+
+if not leftFrame.Valid():
+    leftTarget = create_target_from_base([900, -550])
+else:
+    leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
+
+if not rightFrame.Valid():
+    rightTarget = create_target_from_base([900, 200])
+else:
+    rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
 
 #targets
 home = sim.Item("Home")
 pickTarget = Mat(pickFrame.Pose() * roty(pi) * rotz(pi/2))
-leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
-rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
 
 
 def getTarget(targetnr):
@@ -93,6 +104,8 @@ def get_default_layer_pattern(x_max, y_max):
 
 
 
+
+
 def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern = None, target_cords = None):
     box = sim.Item(box_object.name)
     box_length = box_object.length
@@ -102,7 +115,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
     if (target_cords == None):
         target = getTarget(targetnr)
     else:
-        target = Mat(robotFrame.Pose()) * transl(target_cords[0], target_cords[1] -1000, 0) * roty(pi) 
+        target = create_target_from_base(target_cords)
         
 
     x_max = boxes_in_x_dir
@@ -158,4 +171,4 @@ mirrorTestArray = [
 ]
 
 if __name__ == "__main__":
-    palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, target_cords= [500, 200], layer_pattern = testArray )
+    palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, layer_pattern = testArray )
