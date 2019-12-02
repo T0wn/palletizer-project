@@ -17,8 +17,8 @@ def create_target_from_base(target_cords):
 #frames
 robotFrame = sim.Item('UR10 Base')
 pickFrame = sim.Item("pickFrame")
-leftFrame = sim.Item("placeFrameLeft1")
-rightFrame = sim.Item("placeFrameRight1")
+leftFrame = sim.Item("placeFrameLeft")
+rightFrame = sim.Item("placeFrameRight")
 
 if not leftFrame.Valid():
     leftTarget = create_target_from_base([900, -550])
