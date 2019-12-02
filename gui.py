@@ -22,14 +22,17 @@ class MainFrame:
         self.master = master
         self.frame = tk.Frame(master)
 
-        self.label = tk.Label(master, text="Choose box:").grid(column=1, row=2, padx=2, pady=2)
+        self.label = tk.Label(master, text="Choose box:")
+        self.label.grid(column=1, row=2, padx=2, pady=2)
         self.combo = ttk.Combobox(master, width=15)
         self.combo['values'] = dh.datahandler.getBoxes()
         self.combo.grid(column=2, row=2, padx=2, pady=2)
 
-        self.btn = tk.Button(master, text="Add a custom box", command=self.addCustomBox).grid(column=2, row=3, padx=2, pady=2)
+        self.btn = tk.Button(master, text="Add a custom box", command=self.addCustomBox)
+        self.btn.grid(column=2, row=3, padx=2, pady=2)
 
-        self.targetLabel = tk.Label(master, text="Choose target:").grid(column=1, row=4, padx=2, pady=2)
+        self.targetLabel = tk.Label(master, text="Choose target:")
+        self.targetLabel.grid(column=1, row=4, padx=2, pady=2)
         self.targetCombo = ttk.Combobox(master, width=15)
         self.targetCombo['values'] = ("Left target", "Rigth target")
         self.targetCombo.grid(column=2, row=4, padx=2, pady=2)
@@ -41,14 +44,20 @@ class MainFrame:
         self.inputArray.append( newInput(master, "Boxes in y direction on layer:", 1, 7) )
         self.inputArray.append( newInput(master, "Space between boxes:", 1, 8) )
 
-        self.paternLabel = tk.Label(master, text="Layer pattern (optional):").grid(column=1, row=9)
+        self.patternLabel = tk.Label(master, text="Layer pattern (optional):")
+        self.patternLabel.grid(column=1, row=9)
         self.patternInput = tk.Text(master, height=4, width=30)
         self.patternInput.grid(column=2, row=9)
 
-        self.label2 = tk.Label(master, text="Mirror layers:").grid(column=1, row=10)
-        self.checkBox = tk.Checkbutton(master).grid(column=2, row=10) 
+        self.label2 = tk.Label(master, text="Mirror layers:")
+        self.label2.grid(column=1, row=10)
 
-        self.btn = tk.Button(master, text="Palletize!", command=self.palletizeClick).grid(column=2, row=11)
+        self.checkVal = tk.BooleanVar()
+        self.checkBox = tk.Checkbutton(master, var=self.checkVal)
+        self.checkBox.grid(column=2, row=10) 
+
+        self.palletize_btn = tk.Button(master, text="Palletize!", command=self.palletizeClick)
+        self.palletize_btn.grid(column=2, row=11)
 
 
     def updateComboBox(self):
@@ -62,15 +71,16 @@ class MainFrame:
         boxes_in_x_dir = int(self.inputArray[1].get())
         boxes_in_y_dir = int(self.inputArray[2].get())
         space_between_boxes = int(self.inputArray[3].get())
+        mirrored = self.checkVal.get() 
 
         patternText = self.patternInput.get("1.0", "end")
         
         # sjekker om textfeltet er tomt. Det er et linjeskift i feltet by default
         if (patternText != "\n"):
             pattern = self.parsePattern(patternText)
-            project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, layer_pattern=pattern)
+            project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored, layer_pattern=pattern)
         else:
-            project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes)
+            project.palletize(boxObject, target, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_dir, space_between_boxes, mirrored)
 
 
     # konverterer en string skrevet som en array til en array
