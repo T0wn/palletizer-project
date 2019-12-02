@@ -23,7 +23,6 @@ pickTarget = Mat(pickFrame.Pose() * roty(pi) * rotz(pi/2))
 leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
 rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
 
-print("righttarget: " + str(rightTarget))
 
 def getTarget(targetnr):
     targets = [leftTarget, rightTarget]
@@ -80,7 +79,6 @@ def get_pos_of_box(x, y, z, x_move, y_move, y_max, box_length, box_width, box_he
 
 def get_mirrored_pos_of_box(x, y, z, x_move, y_move, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target):
     mirrored_y = (y_max - 1) - y
-    print("x_move: " + str(x_move) + "   y_move: " + str(y_move))
     return get_pos_of_box(x, mirrored_y, z, x_move, -y_move, y_max, box_length, box_width, box_height, space_between_boxes, target)
 
 
@@ -103,9 +101,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
     if (target_cords == None):
         target = getTarget(targetnr)
-        print(target)
     else:
-        print("base:\n" + str( Mat(robotFrame.Pose() * transl(target_cords[0], target_cords[1], 0)) * roty(pi) * rotz(pi/2) ))
         target = Mat(robotFrame.Pose()) * transl(target_cords[0], target_cords[1] -1000, 0) * roty(pi) 
         
 

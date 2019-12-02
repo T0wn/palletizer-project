@@ -10,9 +10,6 @@
 
 koding TODO:
 * teste algoritme på flere roboter
-* speilvende annenhvert lag
-* advarsel hvis ekser ikke blir plassert oppå en annen eske ved speilvending
-* advarsel ved feil verktøy og løftekapasitet
 
 
 notater fra veiledning:
