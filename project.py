@@ -11,6 +11,33 @@ def create_target_from_base(target_cords):
     return Mat(robotFrame.Pose()) * transl(x_move, y_move-1000, z_move) * roty(pi)
 
 
+sim = Robolink()
+
+robot = sim.Item("UR10")
+tool = sim.Item("CostumTool")
+
+#frames
+robotFrame = sim.Item('UR10 Base')
+pickFrame = sim.Item("pickFrame")
+leftFrame = sim.Item("placeFrameLeft")
+rightFrame = sim.Item("placeFrameRight")
+
+if not leftFrame.Valid():
+    leftTarget = create_target_from_base([900, -550, 0])
+else:
+    leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
+
+if not rightFrame.Valid():
+    rightTarget = create_target_from_base([900, 200, 0])
+else:
+    rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
+
+#targets
+home = sim.Item("Home")
+pickTarget = Mat(pickFrame.Pose() * roty(pi) * rotz(pi/2))
+
+
+
 def getTarget(targetnr):
     targets = [leftTarget, rightTarget]
     return targets[targetnr]
@@ -124,38 +151,9 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
                 # sjekker om box skal plasseres eller ikke
                 if (rotation >= 0):
                     copy_new_box(box, box_height)
-                    pick_new_box(box_length, box_width, box_height, z_pos)
+                    pick_new_box(box_length, box_width, box_height, target[2,3] - pickTarget[2,3])
                     place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation)
                     robot.MoveJ(home)
-
-
-
-
-
-sim = Robolink()
-
-robot = sim.Item("UR10")
-tool = sim.Item("CostumTool")
-
-#frames
-robotFrame = sim.Item('UR10 Base')
-pickFrame = sim.Item("pickFrame")
-leftFrame = sim.Item("placeFrameLeft")
-rightFrame = sim.Item("placeFrameRight")
-
-if not leftFrame.Valid():
-    leftTarget = create_target_from_base([900, -550, 0])
-else:
-    leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
-
-if not rightFrame.Valid():
-    rightTarget = create_target_from_base([900, 200, 0])
-else:
-    rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
-
-#targets
-home = sim.Item("Home")
-pickTarget = Mat(pickFrame.Pose() * roty(pi) * rotz(pi/2))
 
 
 
@@ -175,4 +173,4 @@ mirrorTestArray = [
 ]
 
 if __name__ == "__main__":
-    palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, layer_pattern = testArray )
+    palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, target_cords=[900, 300, 200])#layer_pattern = testArray )
