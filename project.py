@@ -5,34 +5,9 @@ import CustomBox
 import datahandler as dh
 import math
 
-sim = Robolink()
-
-robot = sim.Item("UR10")
-tool = sim.Item("CostumTool")
 
 def create_target_from_base(target_cords):
     return Mat(robotFrame.Pose()) * transl(target_cords[0], target_cords[1] -1000, 0) * roty(pi)
-
-
-#frames
-robotFrame = sim.Item('UR10 Base')
-pickFrame = sim.Item("pickFrame")
-leftFrame = sim.Item("placeFrameLeft")
-rightFrame = sim.Item("placeFrameRight")
-
-if not leftFrame.Valid():
-    leftTarget = create_target_from_base([900, -550])
-else:
-    leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
-
-if not rightFrame.Valid():
-    rightTarget = create_target_from_base([900, 200])
-else:
-    rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
-
-#targets
-home = sim.Item("Home")
-pickTarget = Mat(pickFrame.Pose() * roty(pi) * rotz(pi/2))
 
 
 def getTarget(targetnr):
@@ -152,6 +127,34 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
                     place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation)
                     robot.MoveJ(home)
 
+
+
+
+
+sim = Robolink()
+
+robot = sim.Item("UR10")
+tool = sim.Item("CostumTool")
+
+#frames
+robotFrame = sim.Item('UR10 Base')
+pickFrame = sim.Item("pickFrame")
+leftFrame = sim.Item("placeFrameLeft")
+rightFrame = sim.Item("placeFrameRight")
+
+if not leftFrame.Valid():
+    leftTarget = create_target_from_base([900, -550])
+else:
+    leftTarget = Mat(pickFrame.Pose() * leftFrame.Pose() * roty(pi) * rotz(pi/2))
+
+if not rightFrame.Valid():
+    rightTarget = create_target_from_base([900, 200])
+else:
+    rightTarget = Mat(pickFrame.Pose() * rightFrame.Pose() * roty(pi) * rotz(pi/2))
+
+#targets
+home = sim.Item("Home")
+pickTarget = Mat(pickFrame.Pose() * roty(pi) * rotz(pi/2))
 
 
 
