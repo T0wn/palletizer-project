@@ -49,6 +49,8 @@ class MainFrame:
 
         self.inputArray.append(newInput(master, "Indentation in X", 1, 12))
         self.inputArray.append(newInput(master, "Indentation in Y:", 1, 13))
+        self.inputArray.append(newInput(master, "Indentation in Z:", 1, 13))
+
 
         self.patternLabel = tk.Label(master, text="Layer pattern (optional):")
         self.patternLabel.grid(column=1, row=16)
@@ -82,7 +84,8 @@ class MainFrame:
         if self.targetCombo.current() == 0:
             plane_x_trans = int(self.inputArray[4].get())
             plane_y_trans = int(self.inputArray[5].get())
-            plane_cords = [plane_x_trans, plane_y_trans]
+            plane_z_trans = int(self.inputArray[6].get())
+            plane_cords = [plane_x_trans, plane_y_trans, plane_z_trans]
 
         patternText = self.patternInput.get("1.0", "end")
 
