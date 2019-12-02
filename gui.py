@@ -44,7 +44,7 @@ class MainFrame:
         self.inputArray.append(newInput(master, "Boxes in y direction on layer:", 1, 7))
         self.inputArray.append(newInput(master, "Space between boxes:", 1, 8))
 
-        self.label = tk.Label(master, text="X/Y indent is only used on Custom target")
+        self.label = tk.Label(master, text="X/Y/Z indent is only used on Custom target")
         self.label.grid(column=1, row=11, padx=2, pady=2)
 
         self.inputArray.append(newInput(master, "Indentation in X", 1, 12))
