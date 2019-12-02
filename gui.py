@@ -31,12 +31,11 @@ class MainFrame:
         self.btn.grid(column=2, row=3, padx=2, pady=2)
 
         self.targetLabel = tk.Label(master, text="Choose target:")
-        self.targetLabel.grid(column=1, row=4, padx=2, pady=2)
+        self.targetLabel.grid(column=1, row=10, padx=2, pady=2)
         testBox = ttk.Combobox(master, width=15)
-        testBox.bind("<<ComboboxSelected>>", self.TextBoxUpdate)
         self.targetCombo = testBox
-        self.targetCombo['values'] = ("Custom", "Left target", "Rigth target")
-        self.targetCombo.grid(column=2, row=4, padx=2, pady=2)
+        self.targetCombo['values'] = ("Custom", "Left target", "Right target")
+        self.targetCombo.grid(column=2, row=10, padx=2, pady=2)
 
         self.inputArray = []
 
@@ -45,25 +44,27 @@ class MainFrame:
         self.inputArray.append(newInput(master, "Boxes in y direction on layer:", 1, 7))
         self.inputArray.append(newInput(master, "Space between boxes:", 1, 8))
 
+        self.label = tk.Label(master, text="X/Y indent is only used on Custom target")
+        self.label.grid(column=1, row=11, padx=2, pady=2)
+
+        self.inputArray.append(newInput(master, "Indentation in X", 1, 12))
+        self.inputArray.append(newInput(master, "Indentation in Y:", 1, 13))
+
         self.patternLabel = tk.Label(master, text="Layer pattern (optional):")
-        self.patternLabel.grid(column=1, row=12)
+        self.patternLabel.grid(column=1, row=16)
         self.patternInput = tk.Text(master, height=4, width=30)
-        self.patternInput.grid(column=2, row=12)
+        self.patternInput.grid(column=2, row=16)
 
         self.label2 = tk.Label(master, text="Mirror layers:")
-        self.label2.grid(column=1, row=13)
+        self.label2.grid(column=1, row=17)
 
         self.checkVal = tk.BooleanVar()
         self.checkBox = tk.Checkbutton(master, var=self.checkVal)
-        self.checkBox.grid(column=2, row=13)
+        self.checkBox.grid(column=2, row=17)
 
         self.palletize_btn = tk.Button(master, text="Palletize!", command=self.palletizeClick)
-        self.palletize_btn.grid(column=2, row=14)
+        self.palletize_btn.grid(column=2, row=18)
 
-    def TextBoxUpdate(self, master):
-        if self.targetCombo.current() == 0:
-            self.newWindow = tk.Toplevel(self.master)
-            self.app = customPlane(self.newWindow, self)
 
 
 
@@ -106,25 +107,6 @@ class MainFrame:
         self.newWindow = tk.Toplevel(self.master)
         self.app = newBoxFrame(self.newWindow, self)
 
-
-class customPlane:
-    def __init__(self, master, mainFrame):
-        self.master = master
-        self.mainFrame = mainFrame
-        self.frame = tk.Frame(master)
-
-        self.label = tk.Label(master, text="To undo/change values later, either change target/reselect custom target")
-        self.label.grid(column=1, row=1, padx=2, pady=2)
-        self.inputArray = []
-        self.inputArray.append(newInput(master, "Indentation in X", 1, 3))
-        self.inputArray.append(newInput(master, "Indentation in Y:", 1, 4))
-
-        self.addButton = tk.Button(master, text="Save for custom", command=self.saveOffset)
-        self.addButton.grid(column=2, row=5, padx=60, pady=5)
-        self.msgBox = tk.Label(master, text="").grid(column=2, row=6)
-
-    def saveOffset(self):
-        print("haha")
 
 class newBoxFrame:
     def __init__(self, master, mainFrame):
