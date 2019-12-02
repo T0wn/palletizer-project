@@ -22,11 +22,11 @@ def copy_new_box(box, box_height):
     new_box.setPose(pickTarget * transl(0, 0, -box_height))
 
 
-def pick_new_box(box_length, box_width, box_height, layerHeight):
+def pick_new_box(box_length, box_width, box_height, placement_height):
     robot.MoveJ( pickTarget * transl(box_width / 2, box_length / 2, -100) )
     robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -box_height) )
     tool.AttachClosest()
-    robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -((box_height * (1 + layerHeight)) + 100)) )
+    robot.MoveL( pickTarget * transl(box_width / 2, box_length / 2, -(placement_height + box_height* 2.5 + 100)) )
 
 
 def place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation):
@@ -124,7 +124,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
                 # sjekker om box skal plasseres eller ikke
                 if (rotation >= 0):
                     copy_new_box(box, box_height)
-                    pick_new_box(box_length, box_width, box_height, z)
+                    pick_new_box(box_length, box_width, box_height, z_pos)
                     place_box(x_pos, y_pos, z_pos, box_height, space_between_boxes, target, rotation)
                     robot.MoveJ(home)
 
