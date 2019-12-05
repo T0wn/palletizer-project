@@ -33,3 +33,8 @@ Hvis du bruker "Custom" må man ta med "Frame Indentation". Da skriver man bare 
 
 Til slutt har du "Layer pattern" og "Mirror Layers". Sistnevnte er veldig simpel i at hvis den er skrudd på, vil annenhvert lag av bokser bli speilvendt.
 "Layer pattern" er litt komplisert, men lar deg endre rotasjonen og plasseringen til hver enkelt boks helt fritt.
+
+Når alt er satt opp er det bare å trykke "Palletize" og roboten burde begynne å palletere i RoboDK vinduet.
+Det bør merkes at det ikke er noe multithreading på programmet, så vinduet vil stoppe å fungere helt mens palletering kjører. Hvis du tvinger programmet til å stoppe og så starte igjen, vil det fungere.bruker
+
+Vedlagt i filen er et RoboDK enviroment med en UR10 robot, alle frames definert og et bord for referanse. Bordet er lagd av Haris Jasarevic for anvendt robotikk hos Høgskolen i Østfold og er brukt med tillatelse.
