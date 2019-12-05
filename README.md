@@ -32,9 +32,27 @@ Boksene blir automatisk lagt inn i koordinatene 0,0,0 i "pickFrame"
 Hvis du bruker "Custom" må man ta med "Frame Indentation". Da skriver man bare hvor mange mm i hver retning bort fra basen til roboten som placePlane kommer til å være. Hvis dette ikke blir gjort vil roboten nesten garantert kræsje i seg selv
 
 Til slutt har du "Layer pattern" og "Mirror Layers". Sistnevnte er veldig simpel i at hvis den er skrudd på, vil annenhvert lag av bokser bli speilvendt.
-"Layer pattern" er litt komplisert, men lar deg endre rotasjonen og plasseringen til hver enkelt boks helt fritt.
+"Layer pattern" er litt komplisert, men lar deg endre rotasjonen og plasseringen til hver enkelt boks helt fritt. Se eget avsnitt om Layer pattern lenger ned.
 
 Når alt er satt opp er det bare å trykke "Palletize" og roboten burde begynne å palletere i RoboDK vinduet.
 Det bør merkes at det ikke er noe multithreading på programmet, så vinduet vil stoppe å fungere helt mens palletering kjører. Hvis du tvinger programmet til å stoppe og så starte igjen, vil det fungere.bruker
 
 Vedlagt i filen er et RoboDK enviroment med en UR10 robot, alle frames definert og et bord for referanse. Bordet er lagd av Haris Jasarevic for anvendt robotikk hos Høgskolen i Østfold og er brukt med tillatelse.
+
+### Layer pattern
+Hver box har sin egen tuple for å sette rotasjon, x-posisjon og y-posisjon
+(rot, x, y)
+rot = rotasjon med klokka i grader. Hvis rot er et negativt tall vil ikke boksen bli plassert
+x = antall millimeter forflytting i x retning
+y = antall millimeter forflytting i y retning
+
+Hver rad av bokser i x retning er en array av slike tuple'er
+hver av disse arrayene er igjen inni en array.
+
+Her kommer noen eksempler.
+
+testArray = [
+    [(90, -30, 15), (-1, 0, 0), (90, -30, -15)],
+    [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
+    [(90, 30, 15), (-1, 0, 0), (90, 30, -15)]
+]
