@@ -158,8 +158,8 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
 
 
-# (rotation, x-forskyvning, y-forskyvning)
-# rotation options: -1 = plasserer ikke box      x = roterer x grader
+# (rotation, x-forskyvning, y-forskyvning) for hver boks
+# rotation options: -1 = plasserer ikke box      x = roterer boks x grader med klokka
 exampleArray = [
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)],
     [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
@@ -178,5 +178,6 @@ example3Array = [
     [(135, -25, 0), (45, 25, 0)]
 ]
 
+# Brukes til å kjøre algoritme uten bruk av GUI
 if __name__ == "__main__":
     palletize( dh.datahandler.getBoxes()[1], 1, 2, 3, 2, 5, False, layer_pattern = example3Array, target_cords=[600, 200, 0])

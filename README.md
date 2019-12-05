@@ -39,6 +39,9 @@ Det bør merkes at det ikke er noe multithreading på programmet, så vinduet vi
 
 Vedlagt i filen er et RoboDK enviroment med en UR10 robot, alle frames definert og et bord for referanse. Bordet er lagd av Haris Jasarevic for anvendt robotikk hos Høgskolen i Østfold og er brukt med tillatelse.
 
+<img src="./bilder/GUI.PNG" height="400"><break>
+*GUI for testing av algoritme*
+
 ### Layer pattern
 Hver box har sin egen tuple for å sette rotasjon, x-posisjon og y-posisjon
 `(rot, x, y)`
@@ -51,8 +54,8 @@ Forflytningene kommer etter vanlig mønster.
 Hver rad av bokser i x retning er en array av slike tuple'er
 hver av disse arrayene er igjen inni en array.
 
-**Her kommer noen eksempler med Layer pattern og resultat.**
-*Alle eksempler har 5mm standard mellomrom mellom boxer*
+**Her kommer noen eksempler med Layer pattern og resultat.**  
+*Alle eksempler har 5mm standard mellomrom mellom boxer.*
 
 ```
 testArray = [
@@ -61,7 +64,7 @@ testArray = [
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)]
 ]
 ```
-<img src="./bilder/example1.PNG" height="400">
+<img src="./bilder/example1.PNG" width="400">
 
 
 
@@ -72,7 +75,7 @@ example2Array = [
     [(0, 0, 0), (0, 0, 0)]
 ]
 ```
-<img src="./bilder/example2.PNG" height="400">
+<img src="./bilder/example2.PNG" width="400">
 
 ```
 example3Array = [
@@ -82,4 +85,4 @@ example3Array = [
 ]
 ```
 
-<img src="./bilder/example3.PNG" height="400">
+<img src="./bilder/example3.PNG" width="400">
