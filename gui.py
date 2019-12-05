@@ -125,7 +125,8 @@ class newBoxFrame:
 
         self.addButton = tk.Button(master, text="Add box!", command=self.addBoxClick)
         self.addButton.grid(column=2, row=5, padx=60,pady=5)
-        self.msgBox = tk.Label(master, text="").grid(column=2, row=6)
+        self.msgBox = tk.Label(master, text="")
+        self.msgBox.grid(column=2, row=6)
 
     def addBoxClick(self):
         name = str(self.inputArray[0].get())
@@ -137,7 +138,8 @@ class newBoxFrame:
 
         dh.datahandler.addBox(box)
         self.mainFrame.updateComboBox()
-        self.msgBox = tk.Label(self.master, text="Box created!").grid(column=2, row=6)
+        self.msgBox = tk.Label(self.master, text="Box created!")
+        self.msgBox.grid(column=2, row=6)
 
 
 # Starter gui
