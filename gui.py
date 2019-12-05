@@ -47,9 +47,9 @@ class MainFrame:
         self.label = tk.Label(master, text="X/Y/Z indent is only used on Custom target")
         self.label.grid(column=1, row=11, padx=2, pady=2)
 
-        self.inputArray.append(newInput(master, "Indentation in X", 1, 12))
-        self.inputArray.append(newInput(master, "Indentation in Y:", 1, 13))
-        self.inputArray.append(newInput(master, "Indentation in Z:", 1, 14))
+        self.inputArray.append(newInput(master, "Target indentation in X", 1, 12))
+        self.inputArray.append(newInput(master, "Target indentation in Y", 1, 13))
+        self.inputArray.append(newInput(master, "Target indentation in Z", 1, 14))
 
 
         self.patternLabel = tk.Label(master, text="Layer pattern (optional):")
