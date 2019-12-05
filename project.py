@@ -160,17 +160,23 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
 
 # (rotation, x-forskyvning, y-forskyvning)
 # rotation options: -1 = plasserer ikke box      x = roterer x grader
-testArray = [
+exampleArray = [
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)],
     [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)]
 ]
 
-mirrorTestArray = [
-    [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
-    [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
-    [(0, 0, 0), (0, 0, 0), (-1, 0, 0)]
+example2Array = [
+    [(0, 0, 0), (0, 0, 0)],
+    [(90, -20, 0), (90, 20, 0)],
+    [(0, 0, 0), (0, 0, 0)]
+]
+
+example3Array = [
+    [(45, -25, 0), (135, 25, 0)],
+    [(-1, -20, 0), (0, -25, 0)],
+    [(135, -25, 0), (45, 25, 0)]
 ]
 
 if __name__ == "__main__":
-    palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, layer_pattern = testArray, target_cords=[600, 200, 0])
+    palletize( dh.datahandler.getBoxes()[1], 1, 2, 3, 2, 5, False, layer_pattern = example3Array, target_cords=[600, 200, 0])

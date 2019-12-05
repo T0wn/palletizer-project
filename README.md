@@ -41,22 +41,45 @@ Vedlagt i filen er et RoboDK enviroment med en UR10 robot, alle frames definert 
 
 ### Layer pattern
 Hver box har sin egen tuple for å sette rotasjon, x-posisjon og y-posisjon
-(rot, x, y)
+`(rot, x, y)`
 rot = rotasjon med klokka i grader. Hvis rot er et negativt tall vil ikke boksen bli plassert
 x = antall millimeter forflytting i x retning. 
-y = antall millimeter forflytting i y retning
-Forflytningene kommer etter vanlig
+y = antall millimeter forflytting i y retning`
+
+Forflytningene kommer etter vanlig mønster.
 
 Hver rad av bokser i x retning er en array av slike tuple'er
 hver av disse arrayene er igjen inni en array.
 
-Her kommer noen eksempler.
+**Her kommer noen eksempler med Layer pattern og resultat.**
+*Alle eksempler har 5mm standard mellomrom mellom boxer*
 
-`
+```
 testArray = [
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)],
     [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)]
 ]
-`
-![testArray resultat](./bilder/testArrayResult.PNG)
+```
+<img src="./bilder/example1.PNG" height="400">
+
+
+
+```
+example2Array = [
+    [(0, 0, 0), (0, 0, 0)],
+    [(90, -20, 0), (90, 20, 0)],
+    [(0, 0, 0), (0, 0, 0)]
+]
+```
+<img src="./bilder/example2.PNG" height="400">
+
+```
+example3Array = [
+    [(45, -25, 0), (135, 25, 0)],
+    [(-1, -20, 0), (0, -25, 0)],
+    [(135, -25, 0), (45, 25, 0)]
+]
+```
+
+<img src="./bilder/example3.PNG" height="400">
