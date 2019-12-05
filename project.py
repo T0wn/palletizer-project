@@ -8,13 +8,13 @@ import math
 
 def create_target_from_base(target_cords):
     x_move, y_move, z_move = target_cords
-    return Mat(robotFrame.Pose()) * transl(x_move, y_move-1000, z_move) * roty(pi)
+    return Mat(robotFrame.Pose()) * transl(x_move - robotFrame.Pose()[0,3], y_move - robotFrame.Pose()[1,3], z_move - robotFrame.Pose()[2,3]) * roty(pi)
 
 
 sim = Robolink()
 
 robot = sim.Item("robot")
-tool = sim.Item("robotTool")
+tool = sim.Item("tool")
 
 #frames
 robotFrame = sim.Item('robot base')
@@ -173,5 +173,4 @@ mirrorTestArray = [
 ]
 
 if __name__ == "__main__":
-    # print(Mat(robotFrame.Pose()))
-    palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, target_cords=[900, 300, 200])#layer_pattern = testArray )
+    palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, target_cords=[900, 200, 0])#layer_pattern = testArray )

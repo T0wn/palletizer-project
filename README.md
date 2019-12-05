@@ -17,9 +17,9 @@ pip install -r requirements.txt
 
 ## Hvordan kjøre
 Prosjektet bruker roboDK API til å kjøre. Når programmet blir åpnet vil den prøve å starte RoboDK hvis den ikke finner det
-Når RoboDK er åpnet setter du opp arbeidsområdet slik du ønsker. Det eneste som må husker er at roboten som du skal brukes til palletering må hete "robot", tool må hete "tool" og då må ha basen til roboten navngitt som "roboBase"
+Når RoboDK er åpnet setter du opp arbeidsområdet slik du ønsker. Det eneste som må husker er at roboten som du skal brukes til palletering må hete "robot", tool må hete "tool" og då må ha basen til roboten navngitt som "robot base"
 Der boksene skal plukkes fra må ha en frame som heter "pickFrame". Du kan også definere frames "placeFrameLeft" og "placeFrameRight", men disse er ikke nødvendige for at programmet skal kjøre.
-Hvis "placeFrameLeft" og "placeFrameRight" ikke er definert, er det best å holde seg til "custom" target. Hvordan dette fungerer er forklart senere.
+Hvis "placeFrameLeft" og "placeFrameRight" ikke er definert, er det best å holde seg til "custom" target. Hvordan dette fungerer er forklart senere. 
 
 Når alt er satt opp og du kjører GUI vil en meny med flere valg komme opp. Alle mål er i millimeter.
 "Choose box" lar deg velge hvilken boks du vil teste algoritmen med. Disse er lagret i en json fil som kan endres manuelt.
