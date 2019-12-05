@@ -13,11 +13,11 @@ def create_target_from_base(target_cords):
 
 sim = Robolink()
 
-robot = sim.Item("Robot")
-tool = sim.Item("Tool")
+robot = sim.Item("robot")
+tool = sim.Item("tool")
 
 #frames
-robotFrame = sim.Item('RoboBase')
+robotFrame = sim.Item('roboBase')
 pickFrame = sim.Item("pickFrame")
 leftFrame = sim.Item("placeFrameLeft")
 rightFrame = sim.Item("placeFrameRight")
