@@ -22,6 +22,7 @@ pickFrame = sim.Item("pickFrame")
 leftFrame = sim.Item("placeFrameLeft")
 rightFrame = sim.Item("placeFrameRight")
 
+# Oppretter left og right target hvis de ikke finnes i robodk.
 if not leftFrame.Valid():
     leftTarget = create_target_from_base([900, -550, 0])
 else:
@@ -140,6 +141,7 @@ def palletize(box_object, targetnr, boxes_in_x_dir, boxes_in_y_dir, boxes_in_z_d
                     rotation, x_move, y_move = layer_pattern[y][x]
 
 
+                # Sjekker om laget skal speilvendes
                 if (mirrored & (z % 2 == 1) & (rotation >= 0)):
                     rotation = layer_pattern[y][x][0] + 180
                     x_pos, y_pos, z_pos = get_mirrored_pos_of_box(x, y, z, x_move, y_move, x_max, y_max, box_length, box_width, box_height, space_between_boxes, target)
