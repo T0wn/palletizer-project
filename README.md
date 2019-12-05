@@ -43,16 +43,20 @@ Vedlagt i filen er et RoboDK enviroment med en UR10 robot, alle frames definert 
 Hver box har sin egen tuple for å sette rotasjon, x-posisjon og y-posisjon
 (rot, x, y)
 rot = rotasjon med klokka i grader. Hvis rot er et negativt tall vil ikke boksen bli plassert
-x = antall millimeter forflytting i x retning
+x = antall millimeter forflytting i x retning. 
 y = antall millimeter forflytting i y retning
+Forflytningene kommer etter vanlig
 
 Hver rad av bokser i x retning er en array av slike tuple'er
 hver av disse arrayene er igjen inni en array.
 
 Her kommer noen eksempler.
 
+`
 testArray = [
-    [(90, -30, 15), (-1, 0, 0), (90, -30, -15)],
+    [(90, 0, 0), (-1, 0, 0), (90, 0, 0)],
     [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
-    [(90, 30, 15), (-1, 0, 0), (90, 30, -15)]
+    [(90, 0, 0), (-1, 0, 0), (90, 0, 0)]
 ]
+`
+![testArray resultat](./bilder/testArrayResult.PNG)
