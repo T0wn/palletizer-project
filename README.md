@@ -3,4 +3,11 @@ Prosjektet inneholder en algoritme for palletizing av ekser med en robot, samt e
 
 ## Avhengigheter
 - utviklet i python 3.7.3
-- roboDK api
+- roboDK api (kan installeres med "pip install robodk")
+
+Hvis det skulle oppstå problemer med avhengigheter er det lagt med en "requirements.txt" fil.
+"requirements.txt" inneholder alle installerte pakker på en maskin som kjører prosjektet uten problemer.
+For å installere pakker fra "requirements.txt" kjør
+```
+pip install -r requirements.txt
+```

@@ -13,11 +13,11 @@ def create_target_from_base(target_cords):
 
 sim = Robolink()
 
-robot = sim.Item("UR10")
-tool = sim.Item("CostumTool")
+robot = sim.Item("robot")
+tool = sim.Item("robotTool")
 
 #frames
-robotFrame = sim.Item('UR10 Base')
+robotFrame = sim.Item('robot base')
 pickFrame = sim.Item("pickFrame")
 leftFrame = sim.Item("placeFrameLeft")
 rightFrame = sim.Item("placeFrameRight")
@@ -173,4 +173,5 @@ mirrorTestArray = [
 ]
 
 if __name__ == "__main__":
+    # print(Mat(robotFrame.Pose()))
     palletize( dh.datahandler.getBoxes()[1], 1, 3, 3, 1, 5, False, target_cords=[900, 300, 200])#layer_pattern = testArray )
