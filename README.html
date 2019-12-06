@@ -292,21 +292,21 @@ N&#xE5;r RoboDK er &#xE5;pnet setter du opp arbeidsomr&#xE5;det slik du &#xF8;ns
 Der boksene skal plukkes fra m&#xE5; ha en frame som heter &quot;pickFrame&quot;. Du kan ogs&#xE5; definere frames &quot;placeFrameLeft&quot; og &quot;placeFrameRight&quot;, men disse er ikke n&#xF8;dvendige for at programmet skal kj&#xF8;re.<br>
 Hvis &quot;placeFrameLeft&quot; og &quot;placeFrameRight&quot; ikke er definert, er det best &#xE5; holde seg til &quot;custom&quot; target. Hvordan dette fungerer er forklart senere.</p>
 <p>N&#xE5;r alt er satt opp og du kj&#xF8;rer GUI vil en meny med flere valg komme opp. Alle m&#xE5;l er i millimeter.<br>
-&quot;Choose box&quot; lar deg velge hvilken boks du vil teste algoritmen med. Disse er lagret i en json fil som kan endres manuelt.<br>
-Du kan lage en ny boks via &quot;Add a custom box&quot;. Dette &#xE5;pner et nytt vindu hvor du skriver inn bredde, lengde, h&#xF8;yde samt et navn for boksen. Lagrer du boksen etter &#xE5; ha fyllt in dette vil den komme opp i menyen for bokser<br>
+<u>&quot;Choose box&quot;</u> lar deg velge hvilken boks du vil teste algoritmen med. Disse er lagret i en json fil som kan endres manuelt.<br>
+Du kan lage en ny boks via <u>&quot;Add a custom box&quot;</u>. Dette &#xE5;pner et nytt vindu hvor du skriver inn bredde, lengde, h&#xF8;yde samt et navn for boksen. Lagrer du boksen etter &#xE5; ha fyllt in dette vil den komme opp i menyen for bokser<br>
 Boksene blir automatisk lagt inn i koordinatene 0,0,0 i &quot;pickFrame&quot;<br>
-&quot;Number of layers&quot; sier hvor mange lag med bokser du &#xF8;nsker vertikalt. &quot;Boxes in x direction&quot;  og &quot;Boxes in y direction&quot; er de horizontale retningene, med hver av de definert av retning til X og Y i rammen hvor boksene blir plasert.<br>
-&quot;Space between boxes&quot; lar deg sette en default indent mellom hver boks. Dette kan endrer manuelt i &quot;Layer Pattern&quot;</p>
-<p>&quot;Choose Target&quot; velger hvilken frame som boksene blir plasert i. &quot;placeFrameLeft&quot; og &quot;placeFrameRight&quot; kan bli egendefinert av bruker. &quot;Custom&quot; g&#xE5;r utifra basen til Roboten som 0,0,0 posisjon, og kan i visse tilfeller v&#xE6;re lettere &#xE5; bruker<br>
-Hvis du bruker &quot;Custom&quot; m&#xE5; man ta med &quot;Frame Indentation&quot;. Da skriver man bare hvor mange mm i hver retning bort fra basen til roboten som placePlane kommer til &#xE5; v&#xE6;re. Hvis dette ikke blir gjort vil roboten nesten garantert kr&#xE6;sje i seg selv</p>
-<p>Til slutt har du &quot;Layer pattern&quot; og &quot;Mirror Layers&quot;. Sistnevnte er veldig simpel i at hvis den er skrudd p&#xE5;, vil annenhvert lag av bokser bli speilvendt.<br>
+<u>&quot;Number of layers&quot;</u> sier hvor mange lag med bokser du &#xF8;nsker vertikalt. <u>&quot;Boxes in x direction&quot;</u>  og <u>&quot;Boxes in y direction&quot;</u> er de horizontale retningene, med hver av de definert av retning til X og Y i rammen hvor boksene blir plasert.<br>
+<u>&quot;Space between boxes&quot;</u> lar deg sette en default indent mellom hver boks. Dette kan endrer manuelt i &quot;Layer Pattern&quot;</p>
+<p><u>&quot;Choose Target&quot;</u> velger hvilken frame som boksene blir plasert i. <u>&quot;placeFrameLeft&quot;</u> og <u>&quot;placeFrameRight&quot;</u> kan bli egendefinert av bruker. <u>&quot;Custom&quot;</u> g&#xE5;r utifra basen til Roboten som 0,0,0 posisjon, og kan i visse tilfeller v&#xE6;re lettere &#xE5; bruker<br>
+Hvis du bruker <u>&quot;Custom&quot;</u> m&#xE5; man ta med <u>&quot;Frame Indentation&quot;</u>. Da skriver man bare hvor mange mm i hver retning bort fra basen til roboten som placePlane kommer til &#xE5; v&#xE6;re. Hvis dette ikke blir gjort vil roboten nesten garantert kr&#xE6;sje i seg selv</p>
+<p>Til slutt har du <u>&quot;Layer pattern&quot;</u> og <u>&quot;Mirror Layers&quot;</u>. Sistnevnte er veldig simpel i at hvis den er skrudd p&#xE5;, vil annenhvert lag av bokser bli speilvendt.<br>
 &quot;Layer pattern&quot; er litt komplisert, men lar deg endre rotasjonen og plasseringen til hver enkelt boks helt fritt. Se eget avsnitt om Layer pattern lenger ned.</p>
 <p>N&#xE5;r alt er satt opp er det bare &#xE5; trykke &quot;Palletize&quot; og roboten burde begynne &#xE5; palletere i RoboDK vinduet.<br>
 Det b&#xF8;r merkes at det ikke er noe multithreading p&#xE5; programmet, s&#xE5; vinduet vil stoppe &#xE5; fungere helt mens palletering kj&#xF8;rer. Hvis du tvinger programmet til &#xE5; stoppe og s&#xE5; starte igjen, vil det fungere.bruker</p>
 <p>Vedlagt i filen er et RoboDK enviroment med en UR10 robot, alle frames definert og et bord for referanse. Bordet er lagd av Haris Jasarevic for anvendt robotikk hos H&#xF8;gskolen i &#xD8;stfold og er brukt med tillatelse.</p>
 <p><img src="./bilder/GUI.PNG" height="400"><break><br>
 <em>GUI for testing av algoritme</em></break></p>
-<h3 class="mume-header" id="layer-pattern">Layer pattern</h3>
+<h2 class="mume-header" id="layer-pattern">Layer pattern</h2>
 
 <p>Hver box har sin egen tuple for &#xE5; sette rotasjon, x-posisjon og y-posisjon</p>
 <p><code>(rot, x, y)</code><br>
