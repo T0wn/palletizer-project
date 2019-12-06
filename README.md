@@ -1,13 +1,21 @@
-# palletizer-project
+# Palletizer-project
 Prosjektet inneholder en algoritme for palletizing av ekser med en robot, samt et enkelt gui for testing av algoritme.
 
 ## Avhengigheter
-- utviklet i python 3.7.3
+- python 3.7.3
 - roboDK api
 ```
 pip install robodk
 ```
+- tkinter (for GUI)
+tkinter er et standard bibliotek i python. Det skal ikke være nødvendig å installere.
+Vi har allikevel hatt problemer med at det ikke følger med python på linux-maskiner.
+For installasjon på ubuntu kjør
+```
+sudo apt-get install python3-tk
+```
 
+**Problemer med avhengigheter?**
 Hvis det skulle oppstå problemer med avhengigheter er det lagt med en "requirements.txt" fil.
 "requirements.txt" inneholder alle installerte pakker på en maskin som kjører prosjektet uten problemer.
 For å installere pakker fra "requirements.txt" kjør
@@ -44,21 +52,35 @@ Vedlagt i filen er et RoboDK enviroment med en UR10 robot, alle frames definert 
 
 ### Layer pattern
 Hver box har sin egen tuple for å sette rotasjon, x-posisjon og y-posisjon
+
 `(rot, x, y)`
-rot = rotasjon med klokka i grader. Hvis rot er et negativt tall vil ikke boksen bli plassert
+rot = rotasjon med klokka i grader. Hvis rot er et negativt tall vil ikke boksen bli plassert.  
 x = antall millimeter forflytting i x retning. 
-y = antall millimeter forflytting i y retning`
+y = antall millimeter forflytting i y retning.
 
 Forflytningene kommer etter vanlig mønster.
 
 Hver rad av bokser i x retning er en array av slike tuple'er
 hver av disse arrayene er igjen inni en array.
+Hvis pattern-arrayen blir satt opp feil, vil programmet feile eller mønsteret blir feil.
 
-**Her kommer noen eksempler med Layer pattern og resultat.**  
-*Alle eksempler har 5mm standard mellomrom mellom boxer.*
+**Layer pattern i GUI**
+For å teste layer pattern i gui trenger man kunn å skrive arrayen inn i tekstfeltet. 
+Det er ikke nødvendig å navngi arrayen.
+
+Eksempel:
+```
+[
+[(0,0,0), (0,0,0)],
+[(0,0,0), (0,0,0)]
+]
+```
+
+**Layer pattern eksempler og resultat**  
+*Alle eksempler har 5mm standard mellomrom mellom bokser.*
 
 ```
-testArray = [
+example1Array = [
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)],
     [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)]

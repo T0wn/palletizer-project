@@ -3,7 +3,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <link rel="stylesheet" href="file:///c:\Users\eirij\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.5.0\node_modules\@shd101wyy\mume\dependencies\katex\katex.min.css">
+      <link rel="stylesheet" href="file:////home/t0wn/.vscode/extensions/shd101wyy.markdown-preview-enhanced-0.5.0/node_modules/@shd101wyy/mume/dependencies/katex/katex.min.css">
       
       
 
@@ -263,17 +263,25 @@ pre[data-line] .line-highlight[data-end]:after {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview  ">
-      <h1 class="mume-header" id="palletizer-project">palletizer-project</h1>
+      <h1 class="mume-header" id="palletizer-project">Palletizer-project</h1>
 
 <p>Prosjektet inneholder en algoritme for palletizing av ekser med en robot, samt et enkelt gui for testing av algoritme.</p>
 <h2 class="mume-header" id="avhengigheter">Avhengigheter</h2>
 
 <ul>
-<li>utviklet i python 3.7.3</li>
+<li>python 3.7.3</li>
 <li>roboDK api</li>
 </ul>
 <pre data-role="codeBlock" data-info class="language-"><code>pip install robodk
-</code></pre><p>Hvis det skulle oppst&#xE5; problemer med avhengigheter er det lagt med en &quot;requirements.txt&quot; fil.<br>
+</code></pre><ul>
+<li>tkinter (for GUI)<br>
+tkinter er et standard bibliotek i python. Det skal ikke v&#xE6;re n&#xF8;dvendig &#xE5; installere.<br>
+Vi har allikevel hatt problemer med at det ikke f&#xF8;lger med python p&#xE5; linux-maskiner.<br>
+For installasjon p&#xE5; ubuntu kj&#xF8;r</li>
+</ul>
+<pre data-role="codeBlock" data-info class="language-"><code>sudo apt-get install python3-tk
+</code></pre><p><strong>Problemer med avhengigheter?</strong><br>
+Hvis det skulle oppst&#xE5; problemer med avhengigheter er det lagt med en &quot;requirements.txt&quot; fil.<br>
 &quot;requirements.txt&quot; inneholder alle installerte pakker p&#xE5; en maskin som kj&#xF8;rer prosjektet uten problemer.<br>
 For &#xE5; installere pakker fra &quot;requirements.txt&quot; kj&#xF8;r</p>
 <pre data-role="codeBlock" data-info class="language-"><code>pip install -r requirements.txt
@@ -300,17 +308,26 @@ Det b&#xF8;r merkes at det ikke er noe multithreading p&#xE5; programmet, s&#xE5
 <em>GUI for testing av algoritme</em></break></p>
 <h3 class="mume-header" id="layer-pattern">Layer pattern</h3>
 
-<p>Hver box har sin egen tuple for &#xE5; sette rotasjon, x-posisjon og y-posisjon<br>
-<code>(rot, x, y)</code><br>
-rot = rotasjon med klokka i grader. Hvis rot er et negativt tall vil ikke boksen bli plassert<br>
+<p>Hver box har sin egen tuple for &#xE5; sette rotasjon, x-posisjon og y-posisjon</p>
+<p><code>(rot, x, y)</code><br>
+rot = rotasjon med klokka i grader. Hvis rot er et negativt tall vil ikke boksen bli plassert.<br>
 x = antall millimeter forflytting i x retning.<br>
-y = antall millimeter forflytting i y retning`</p>
+y = antall millimeter forflytting i y retning.</p>
 <p>Forflytningene kommer etter vanlig m&#xF8;nster.</p>
 <p>Hver rad av bokser i x retning er en array av slike tuple&apos;er<br>
-hver av disse arrayene er igjen inni en array.</p>
-<p><strong>Her kommer noen eksempler med Layer pattern og resultat.</strong><br>
-<em>Alle eksempler har 5mm standard mellomrom mellom boxer.</em></p>
-<pre data-role="codeBlock" data-info class="language-"><code>testArray = [
+hver av disse arrayene er igjen inni en array.<br>
+Hvis pattern-arrayen blir satt opp feil, vil programmet feile eller m&#xF8;nsteret blir feil.</p>
+<p><strong>Layer pattern i GUI</strong><br>
+For &#xE5; teste layer pattern i gui trenger man kunn &#xE5; skrive arrayen inn i tekstfeltet.<br>
+Det er ikke n&#xF8;dvendig &#xE5; navngi arrayen.</p>
+<p>Eksempel:</p>
+<pre data-role="codeBlock" data-info class="language-"><code>[
+[(0,0,0), (0,0,0)],
+[(0,0,0), (0,0,0)]
+]
+</code></pre><p><strong>Layer pattern eksempler og resultat</strong><br>
+<em>Alle eksempler har 5mm standard mellomrom mellom bokser.</em></p>
+<pre data-role="codeBlock" data-info class="language-"><code>example1Array = [
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)],
     [(0, 0, 0), (0, 0, 0), (0, 0, 0)],
     [(90, 0, 0), (-1, 0, 0), (90, 0, 0)]
