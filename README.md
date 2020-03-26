@@ -14,7 +14,7 @@ sudo apt-get install python3-tk
 
 Avhengigheter installeres ved å kjøre
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Hvordan kjøre
