@@ -4,10 +4,7 @@ Prosjektet inneholder en algoritme for palletizing av ekser med en robot, samt e
 ## Avhengigheter
 - python 3.7.3
 - roboDK api
-```
-pip install robodk
-```
-- tkinter (for GUI)
+- tkinter (for GUI)  
 tkinter er et standard bibliotek i python. Det skal ikke være nødvendig å installere.
 Vi har allikevel hatt problemer med at det ikke følger med python på linux-maskiner.
 For installasjon på ubuntu kjør
@@ -15,10 +12,7 @@ For installasjon på ubuntu kjør
 sudo apt-get install python3-tk
 ```
 
-**Problemer med avhengigheter?**
-Hvis det skulle oppstå problemer med avhengigheter er det lagt med en "requirements.txt" fil.
-"requirements.txt" inneholder alle installerte pakker på en maskin som kjører prosjektet uten problemer.
-For å installere pakker fra "requirements.txt" kjør
+Avhengigheter installeres ved å kjøre
 ```
 pip install -r requirements.txt
 ```
